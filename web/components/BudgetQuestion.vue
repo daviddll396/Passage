@@ -6,8 +6,8 @@ const props = defineProps({
   apiBase: { type: String, required: true },
   askPath: { type: String, required: true },
   suggestions: { type: Array, default: () => [] },
-  title: { type: String, default: 'Get an answer you can verify.' },
-  placeholder: { type: String, default: 'Ask about a figure, time period, or passage…' },
+  title: { type: String, default: 'Ask this document' },
+  placeholder: { type: String, default: 'What would you like to know about this document?' },
   compact: { type: Boolean, default: false },
 });
 
@@ -50,13 +50,13 @@ async function ask(value = question.value) {
 <template>
   <section class="question-card bl-panel" :class="{ 'question-card-compact': compact }" aria-labelledby="ask-title">
     <div class="question-intro">
-      <p class="bl-kicker">Ask this report</p>
+      <p class="bl-kicker">Ask this document</p>
       <h2 id="ask-title">{{ title }}</h2>
-      <p>Gemini uses this report only. Supporting passages appear when the source can verify an answer.</p>
+      <p>Answers use this document only. Supporting passages appear when the source can verify an answer.</p>
     </div>
 
     <form class="question-form" @submit.prevent="ask()">
-      <label class="sr-only" for="report-question">Ask a question about this report</label>
+      <label class="sr-only" for="report-question">Ask a question about this document</label>
       <textarea
         id="report-question"
         v-model="question"

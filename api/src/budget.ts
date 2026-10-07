@@ -112,7 +112,7 @@ function validQuestion(value: unknown): value is string {
 
 function logBudgetFailure(action: string, error: unknown) {
   const reason = error instanceof Error ? error.message : 'unknown error';
-  console.error(`[BudgetLens] ${action} failed: ${reason}`);
+  console.error(`[Passage] ${action} failed: ${reason}`);
 }
 
 async function findPublishedReport(id: string) {
@@ -178,14 +178,14 @@ export function createBudgetRoutes() {
         report: {
           id: uploadId,
           ...extracted,
-          sourceName: 'Your uploaded report',
+          sourceName: 'Your document',
           sourceUrl: null,
           publishedAt: null,
         },
       });
     } catch (error) {
       logBudgetFailure('PDF extraction', error);
-      return response.status(502).json({ error: 'Unable to extract cited information from this PDF right now' });
+      return response.status(502).json({ error: 'Unable to extract cited information from this document right now' });
     }
   });
 
@@ -202,7 +202,7 @@ export function createBudgetRoutes() {
       return response.json(answer);
     } catch (error) {
       logBudgetFailure('Published report Q&A', error);
-      return response.status(502).json({ error: 'Unable to answer from this report right now' });
+      return response.status(502).json({ error: 'Unable to answer from this document right now' });
     }
   });
 
@@ -218,7 +218,7 @@ export function createBudgetRoutes() {
       return response.json(await answerBudgetQuestion(question.trim(), temporary.report));
     } catch (error) {
       logBudgetFailure('Uploaded report Q&A', error);
-      return response.status(502).json({ error: 'Unable to answer from this report right now' });
+      return response.status(502).json({ error: 'Unable to answer from this document right now' });
     }
   });
 

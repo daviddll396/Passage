@@ -8,7 +8,7 @@ const report = ref(null);
 const loading = ref(true);
 const error = ref('');
 
-useHead(() => ({ title: report.value?.title || 'Public report' }));
+useHead(() => ({ title: report.value?.title || 'Example document' }));
 
 async function loadReport() {
   loading.value = true;
@@ -29,7 +29,7 @@ onMounted(loadReport);
 <template>
   <BudgetShell>
     <main class="bl-main report-main">
-      <NuxtLink class="back-link" to="/#reports"><span aria-hidden="true">←</span> Report library</NuxtLink>
+      <NuxtLink class="back-link" to="/#reports"><span aria-hidden="true">←</span> Examples</NuxtLink>
 
       <div v-if="loading" class="report-loading" role="status">Loading the source report</div>
       <div v-else-if="error" class="bl-state bl-state-error report-error" role="alert">
@@ -53,8 +53,7 @@ onMounted(loadReport);
             <section class="figures-panel bl-panel" aria-labelledby="figures-title">
               <div class="panel-heading">
                 <div>
-                  <p class="bl-kicker">Figures in this report</p>
-                  <h2 id="figures-title">The published numbers</h2>
+                  <h2 id="figures-title">Details from this document</h2>
                 </div>
                 <span class="period-tag">{{ report.period || 'Source values' }}</span>
               </div>
@@ -67,8 +66,8 @@ onMounted(loadReport);
                 </article>
               </div>
               <div v-else class="bl-state">
-                <strong>No figures were extracted</strong>
-                <p>The source report is linked above. No verified figures are available in this library record.</p>
+                <strong>No structured details were extracted</strong>
+                <p>The source document is linked above. No details are available in this example.</p>
               </div>
               <p class="figures-note">Figures are transcribed from the report. AI answers appear separately with their supporting evidence.</p>
             </section>
@@ -92,11 +91,11 @@ onMounted(loadReport);
             <BudgetQuestion
               :api-base="apiBase"
               :ask-path="`/budget/reports/${encodeURIComponent(report.id)}/ask`"
-              :suggestions="['What was the amount allocated to education?', 'How much was spent by October?']"
+              :suggestions="['Summarize the key points', 'What dates or figures should I note?']"
             />
             <div class="source-note">
               <span class="source-note-label">Answer scope</span>
-              <p>Answers use this source only. If the report does not support an answer, BudgetLens should say so.</p>
+              <p>Answers use this source only. Passage says when the document does not provide enough information.</p>
             </div>
           </aside>
         </div>

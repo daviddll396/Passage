@@ -1,11 +1,11 @@
-# BudgetLens interface contract
+# Passage interface contract
 
 ## Product and audience
 
-- **Purpose:** Help people read public budget reports, inspect reported figures, and ask questions grounded in the source text.
-- **Audience:** People who need to understand budget documents without reading every page.
-- **Primary actions:** Open a public report or upload a PDF for private analysis.
-- **Current design revision:** `r4-trajectory-lineart-prompt`.
+- **Purpose:** Help people understand PDFs, ask questions, and check answers against source passages.
+- **Audience:** People who need clear answers from long documents.
+- **Primary actions:** Try a published example or upload a PDF for private analysis.
+- **Current design revision:** `r5-passage`.
 - **Design gate:** `docs/design/design-gate.json`.
 - **Source study:** `docs/design/study.md`.
 - **Review scope:** The user waived mockup-first review and authorized direct implementation for this scope. The waiver is recorded against the current revision in the gate.
@@ -13,21 +13,20 @@
 
 ## Fixed invariants
 
-- Show verified public report values with their source.
-- Keep published figures visually separate from AI answers.
-- Ground AI answers in report evidence and abstain when the report is silent.
-- Label document-page citations and report-listing metadata accurately.
+- Keep source data visually separate from AI answers.
+- Ground AI answers in page evidence and abstain when the document is silent.
+- Label document-page citations and source-listing metadata accurately.
 - Keep user-uploaded PDF files private and temporary. The API sends PDF bytes to Gemini for extraction, then discards the file; extracted data and its questions expire after 30 minutes.
-- Preserve the existing API paths, request payloads, upload limits, and report behavior.
+- Preserve the existing API paths, request payloads, upload limits, and sample library behavior.
 
 ## Brand anchor
 
-- **Vibe:** Airy public-finance editorial with a clear product interface. Use serif display headlines, thin rules, warm paper surfaces, and real report data.
-- **Palette:** Page paper `#f8f7ef`, ink `#203241`, forest `#203b39`, muted gray `#697782`, pale sage `#edf2dc`, peach and periwinkle accents, and lime `#d6ed9e` for limited emphasis.
+- **Vibe:** Airy document editorial with a clear product interface. Use serif display headlines, thin rules, warm paper surfaces, and real source data.
+- **Palette:** Warm paper `#faf7f2`, navy ink `#20283d`, indigo `#34395f`, coral `#ef8b70`, periwinkle, and muted slate. Do not use green.
 - **Type:** System sans for controls and body copy; Georgia for large editorial headings. Do not load a new font service.
-- **Logo:** Project-authored SVG document and magnifier mark with a live BudgetLens wordmark. File: `web/public/brand/budgetlens-mark.svg`.
-- **Shape:** Small to medium corner radii, hairline dividers, and a translucent hero question panel. Use blur only where text contrast remains strong.
-- **Imagery:** One original transparent line-art report illustration supports the hero and upload page. Actual report names, values, periods, pages, and AI evidence remain HTML data from the API. See `docs/design/iterations/r4-trajectory-lineart-prompt/asset-manifest.md`.
+- **Logo:** Generated open-page line-art mark with a live Passage wordmark. File: `web/public/brand/passage-mark.png`.
+- **Shape:** Small to medium corner radii, hairline dividers, and one clearly frosted prompt bar. Keep blur behind the input, with a readable fallback.
+- **Imagery:** Original line art supports the hero and upload page. Actual report names, values, periods, pages, and AI evidence remain HTML data from the API. See `docs/design/iterations/r5-passage/asset-manifest.md`.
 - **Motion:** Use short color, border, and hover transitions. No looping or pulsing indicators, shimmer, or scroll-linked motion. Respect reduced-motion settings.
 
 ## Layout and page behavior
@@ -36,17 +35,17 @@
 
 - Use a light editorial navigation row with a visible PDF upload action.
 - Lead with one direct statement and short product explanation.
-- Show the featured report and its real source, period, metric, and page label beside the line-art illustration.
-- Place a glass question composer in the hero. Connect it to the featured report ask endpoint and keep answers and citations visible.
+- Show the sample document and its real source, period, detail, and page label beside the line-art illustration.
+- Place a visible glass question bar in the hero. Connect it to the sample document endpoint and keep answers and citations visible.
 - Keep a clear action for private PDF analysis.
-- Replace customer-logo claims with factual product properties: source-linked figures, evidence-backed answers, and private uploads.
+- Describe product claims through the source, citations, and private upload behavior.
 - Explain the source → question → evidence path, then show flexible report records.
 - Finish with one focused PDF-analysis action.
 
 ### Report detail
 
 - Show the source name, report title, period, and original-source link first.
-- Separate report figures, source passages, and AI answers into distinct surfaces.
+- Separate source details, source passages, and AI answers into distinct surfaces.
 - Keep report-page labels visible when supplied. Never present report metadata as a quoted page passage.
 - Ask Gemini only after the user submits a question. Keep answer, citation, abstention, and error states readable and grounded.
 
@@ -54,8 +53,9 @@
 
 - Explain privacy and session expiry before file selection.
 - Keep the native PDF input, drag/drop, PDF validation, 8 MB limit, extraction action, and restart behavior.
-- Keep upload results, extracted figures, source passages, and Q&A in the same source-first visual system.
-- Show that uploaded PDFs are sent to Gemini, discarded by BudgetLens, and not added to the public library.
+- Keep upload results, extracted details, source passages, and Q&A in the same source-first visual system.
+- Show that uploaded PDFs are sent to Gemini, discarded by Passage, and not added to the example library.
+- Accept documents with no numeric details when extraction includes page evidence.
 
 ### Responsive and accessible behavior
 
@@ -70,7 +70,7 @@
 - `BudgetReportCard.vue` reuses the existing Vue record-card component and refines the earlier Career1 listing-pattern adaptation from [shadcnblocks-vue](https://shadcnblocks-vue.com/preview?category=career). No external component code is copied.
 - `BudgetQuestion.vue` reuses the answer, citation, and follow-up hierarchy from the user-supplied streaming-answer example, with real API output only.
 - The upload keeps the native file input and existing API state flow. No component or animation dependency is added.
-- Component-source selection and reuse notes are in `docs/design/iterations/r4-trajectory-lineart-prompt/direction.md`.
+- Component-source selection and reuse notes are in `docs/design/iterations/r5-passage/direction.md`.
 
 ## Rejected patterns
 

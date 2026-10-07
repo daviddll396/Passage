@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { budgetRequest } from '../utils/budgetApi.js';
 
-useHead({ title: 'Analyze a PDF' });
+useHead({ title: 'Ask a PDF' });
 const { public: { apiBase } } = useRuntimeConfig();
 const input = ref(null);
 const selectedFile = ref(null);
@@ -70,25 +70,23 @@ async function analyzeReport() {
 <template>
   <BudgetShell>
     <main class="bl-main upload-main">
-      <NuxtLink class="back-link" to="/#reports"><span aria-hidden="true">←</span> Report library</NuxtLink>
+      <NuxtLink class="back-link" to="/#reports"><span aria-hidden="true">←</span> Examples</NuxtLink>
 
       <section class="upload-hero" aria-labelledby="upload-title">
         <div class="upload-heading">
-          <p class="bl-kicker">Private report analysis</p>
-          <h1 id="upload-title">Bring a report.<br><span>Read what it says.</span></h1>
-          <p>Upload a public budget PDF to extract key figures, then ask about the report and inspect the supporting evidence.</p>
+          <h1 id="upload-title">Bring a PDF.<br><span>Ask what's inside.</span></h1>
+          <p>Get its key details, ask questions, and check each answer against the page that supports it.</p>
         </div>
         <div class="upload-art" aria-hidden="true">
-          <img src="/images/budgetlens-report-lineart.png" alt="" fetchpriority="high">
+          <img src="/images/passage-document-lineart.png" alt="" fetchpriority="high">
         </div>
       </section>
 
       <div class="upload-layout">
-        <section class="upload-workspace" aria-label="Upload a budget report">
+        <section class="upload-workspace" aria-label="Upload a PDF document">
           <div v-if="!report" class="upload-card bl-panel">
             <div class="upload-card-head">
               <div>
-                <p class="bl-kicker">Your source document</p>
                 <h2>Choose a PDF to analyze</h2>
               </div>
               <span class="private-tag">Private session</span>
@@ -115,23 +113,22 @@ async function analyzeReport() {
             <p v-if="error" class="upload-error" role="alert">{{ error }}</p>
             <div class="upload-actions">
               <button class="bl-button bl-button-primary" type="button" :disabled="!selectedFile || loading" @click="analyzeReport">
-                {{ loading ? 'Reading your report…' : 'Extract report details' }}
+                {{ loading ? 'Reading your PDF…' : 'Read this PDF' }}
               </button>
               <button v-if="selectedFile" class="clear-file" type="button" :disabled="loading" @click="clearFile">Remove file</button>
             </div>
-            <p class="upload-privacy">The PDF is sent to Gemini for extraction, then discarded by BudgetLens. It is not added to the public library.</p>
+            <p class="upload-privacy">Your PDF is sent to Gemini for extraction, then discarded. It is not added to the example library.</p>
           </div>
 
           <section v-else class="extracted-report bl-panel" aria-labelledby="extracted-title">
             <div class="extracted-top">
               <div>
-                <p class="bl-kicker">Extraction complete</p>
+                <p class="bl-kicker">PDF read</p>
                 <p class="extracted-session">This private report session expires after 30 minutes.</p>
               </div>
               <button class="start-over" type="button" @click="report = null; uploadId = ''; error = ''">Analyze another PDF</button>
             </div>
-            <p class="bl-kicker">Extracted from your document</p>
-            <h2 id="extracted-title">{{ report.title || 'Budget report' }}</h2>
+            <h2 id="extracted-title">{{ report.title || 'Untitled document' }}</h2>
             <p class="extracted-meta">{{ [report.organization, report.period].filter(Boolean).join(' · ') || 'Report details were not stated in the document.' }}</p>
             <p v-if="report.summary" class="extracted-summary">{{ report.summary }}</p>
 
@@ -143,8 +140,8 @@ async function analyzeReport() {
               </article>
             </div>
             <div v-else class="bl-state extracted-empty">
-              <strong>No structured figures were extracted</strong>
-              <p>You can still ask a question about the text the model could read.</p>
+              <strong>No structured details were found</strong>
+              <p>You can still ask about the text in this PDF.</p>
             </div>
 
             <div v-if="report.evidence?.length" class="extracted-evidence">
@@ -162,7 +159,7 @@ async function analyzeReport() {
             class="upload-question"
             :api-base="apiBase"
             :ask-path="`/budget/uploads/${encodeURIComponent(uploadId)}/ask`"
-            :suggestions="['What are the main figures?', 'What does this report not explain?']"
+            :suggestions="['Summarize the key points', 'What does this document leave unanswered?']"
           />
         </section>
 
@@ -171,7 +168,7 @@ async function analyzeReport() {
             <p class="aside-label">What you get</p>
             <h2>A clear answer, with a trail back to the page.</h2>
             <ul>
-              <li>Key figures and reporting period</li>
+              <li>Key details and dates</li>
               <li>Relevant passages from the PDF</li>
               <li>Answers with page citations when available</li>
               <li>A clear response when evidence is missing</li>
@@ -180,7 +177,7 @@ async function analyzeReport() {
           <div class="aside-card privacy-aside">
             <p class="bl-kicker">Privacy and expiry</p>
             <h3>Your document stays out of the library.</h3>
-            <p>BudgetLens sends the PDF to Gemini for analysis, then discards the file. Extracted report data and questions expire after 30 minutes.</p>
+            <p>Passage sends the PDF to Gemini for analysis, then discards the file. Extracted details and questions expire after 30 minutes.</p>
           </div>
         </aside>
       </div>

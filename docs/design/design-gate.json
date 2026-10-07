@@ -110,9 +110,38 @@
           "web/public/images/budgetlens-report-lineart.png"
         ],
         "inheritedPaths": []
+      },
+      {
+        "id": "r5-passage",
+        "parentId": "r4-trajectory-lineart-prompt",
+        "iterationPath": "docs/design/iterations/r5-passage",
+        "scope": ["brand", "hero", "report-library", "report-detail", "upload", "document-qa", "page"],
+        "reason": "Rebrand the product for general PDF understanding, remove green, add the requested generated logo and visible glass prompt bar, and allow documents with citable evidence but no numeric details.",
+        "changedPaths": [
+          "docs/design/DESIGN.md",
+          "docs/design/study.md",
+          "docs/design/design-gate.json",
+          "docs/design/iterations/r5-passage/direction.md",
+          "docs/design/iterations/r5-passage/asset-manifest.md",
+          "README.md",
+          "api/src/budget-ai.ts",
+          "api/src/budget.ts",
+          "api/src/server.ts",
+          "web/app.vue",
+          "web/assets/css/budgetlens.css",
+          "web/components/BudgetQuestion.vue",
+          "web/components/BudgetReportCard.vue",
+          "web/components/BudgetShell.vue",
+          "web/pages/index.vue",
+          "web/pages/reports/[id].vue",
+          "web/pages/upload.vue",
+          "web/public/brand/passage-mark.png",
+          "web/public/images/passage-document-lineart.png"
+        ],
+        "inheritedPaths": []
       }
     ],
-    "currentRevisionId": "r4-trajectory-lineart-prompt",
+    "currentRevisionId": "r5-passage",
     "approvals": [
       {
         "kind": "review-waiver",
@@ -151,6 +180,14 @@
         "revisionId": "r4-trajectory-lineart-prompt",
         "scope": ["brand", "hero", "report-library", "report-detail", "upload", "page"],
         "waivedAt": "2026-10-06T23:13:03+01:00"
+      },
+      {
+        "kind": "review-waiver",
+        "status": "waived",
+        "reference": "User requested direct implementation of a brand, palette, positioning, and hero prompt correction.",
+        "revisionId": "r5-passage",
+        "scope": ["brand", "hero", "report-library", "report-detail", "upload", "document-qa", "page"],
+        "waivedAt": "2026-10-06T23:49:51+01:00"
       }
     ]
   },

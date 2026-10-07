@@ -2,14 +2,14 @@
   <div class="bl-page">
     <div class="bl-wrap bl-nav-frame">
       <header class="bl-nav">
-        <NuxtLink class="bl-brand" to="/" aria-label="BudgetLens home">
-          <img class="bl-brand-mark" src="/brand/budgetlens-mark.svg" alt="">
-          <span class="bl-wordmark">Budget<span>Lens</span></span>
+        <NuxtLink class="bl-brand" to="/" aria-label="Passage home">
+          <img class="bl-brand-mark" src="/brand/passage-mark.png" alt="">
+          <span class="bl-wordmark">Passage</span>
         </NuxtLink>
         <nav class="bl-nav-links" aria-label="Main navigation">
-          <NuxtLink class="bl-nav-link" to="/#reports">Reports</NuxtLink>
+          <NuxtLink class="bl-nav-link" to="/#reports">Examples</NuxtLink>
           <NuxtLink class="bl-nav-link" to="/#how-it-works">How it works</NuxtLink>
-          <NuxtLink class="bl-nav-cta" to="/upload">Upload a PDF</NuxtLink>
+          <NuxtLink class="bl-nav-cta" to="/upload">Upload a document</NuxtLink>
         </nav>
       </header>
     </div>
@@ -18,15 +18,15 @@
 
     <footer class="bl-wrap bl-footer">
       <div class="bl-footer-brand">
-        <NuxtLink class="bl-brand" to="/" aria-label="BudgetLens home">
-          <img class="bl-brand-mark" src="/brand/budgetlens-mark.svg" alt="">
-          <span class="bl-wordmark">Budget<span>Lens</span></span>
+        <NuxtLink class="bl-brand" to="/" aria-label="Passage home">
+          <img class="bl-brand-mark" src="/brand/passage-mark.png" alt="">
+          <span class="bl-wordmark">Passage</span>
         </NuxtLink>
-        <p>Read the source behind the number.</p>
+        <p>Every answer, back to its source.</p>
       </div>
       <div class="bl-footer-links">
-        <NuxtLink to="/#reports">Report library</NuxtLink>
-        <NuxtLink to="/upload">Upload a PDF</NuxtLink>
+        <NuxtLink to="/#reports">Examples</NuxtLink>
+        <NuxtLink to="/upload">Upload a document</NuxtLink>
       </div>
     </footer>
   </div>
