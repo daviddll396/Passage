@@ -16,6 +16,7 @@ export function createApp() {
       response.set('Access-Control-Allow-Origin', origin);
       response.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
       response.set('Access-Control-Allow-Headers', 'Content-Type, X-Passage-Question');
+      response.set('Access-Control-Expose-Headers', 'Retry-After');
     }
     if (request.method === 'OPTIONS') {
       if (origin && !frontendOrigins.has(origin)) return response.sendStatus(403);

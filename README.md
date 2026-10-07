@@ -19,6 +19,16 @@ Passage helps people understand PDFs. Visitors can explore a published example o
 
 The temporary upload session is held by one API process. This is suitable for the local demo. A multi-instance deployment needs shared, expiring session storage.
 
+## Request limits
+
+The API limits requests by client IP:
+
+- PDF uploads: 3 every 10 minutes.
+- Questions about sample reports or extracted upload details: 12 per minute.
+- Questions that search the original uploaded PDF: 4 per minute.
+
+When a limit is reached, the API returns `429` and a `Retry-After` value in seconds. Passage reads that header and tells the visitor how long to wait. The counters are held in API process memory, so they reset when the process restarts and are not shared across multiple instances. Behind Cloud Run, confirm the forwarded IP chain and configure Express to trust only the correct proxy hops before relying on per-visitor limits. Use shared rate-limit storage before running multiple API instances.
+
 ## Public report data
 
 The seeded October 2025 Federal Government of Nigeria budget performance report is published by the [Open Treasury portal](https://opentreasury.gov.ng/index.php/component/content/article/175-y-2025/12397-fgn-monthly-2025?Itemid=101). Passage links to the [source PDF](https://www.opentreasury.gov.ng/images/2025/MONTHLYBUDPERF/BUDGET_PERF/FUNCTIONS/OCTOBER---PDF.pdf). The library seed includes Education and Health values from page 1.
