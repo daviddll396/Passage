@@ -46,9 +46,48 @@
           "docs/design/iterations/r2-budgetlens/direction.md"
         ],
         "inheritedPaths": []
+      },
+      {
+        "id": "r3-budgetlens-proof-panels",
+        "parentId": "r2-budgetlens",
+        "iterationPath": "docs/design/iterations/r3-budgetlens-proof-panels",
+        "scope": [
+          "brand",
+          "hero",
+          "report-library",
+          "report-detail",
+          "upload",
+          "page"
+        ],
+        "reason": "Redesign the BudgetLens interface around source proof and a stronger editorial product hierarchy.",
+        "changedPaths": [
+          "docs/design/DESIGN.md",
+          "docs/design/study.md",
+          "docs/design/design-gate.json",
+          "docs/design/iterations/r3-budgetlens-proof-panels/direction.md",
+          "docs/design/iterations/r3-budgetlens-proof-panels/asset-manifest.md",
+          "docs/design/evidence/source/restate-home-1402x876.png",
+          "docs/design/evidence/target/home-desktop.png",
+          "docs/design/evidence/target/home-footer-desktop.png",
+          "docs/design/evidence/target/report-desktop.png",
+          "docs/design/evidence/target/upload-desktop.png",
+          "web/app.vue",
+          "web/assets/css/budgetlens.css",
+          "web/components/BudgetShell.vue",
+          "web/components/BudgetReportCard.vue",
+          "web/components/BudgetQuestion.vue",
+          "web/pages/index.vue",
+          "web/pages/reports/[id].vue",
+          "web/pages/upload.vue",
+          "web/nuxt.config.ts",
+          "web/public/brand/budgetlens-mark.svg",
+          "web/public/images/budgetlens-evidence-layers.png",
+          "web/public/images/budgetlens-report-folder.png"
+        ],
+        "inheritedPaths": []
       }
     ],
-    "currentRevisionId": "r2-budgetlens",
+    "currentRevisionId": "r3-budgetlens-proof-panels",
     "approvals": [
       {
         "kind": "review-waiver",
@@ -64,6 +103,21 @@
           "page"
         ],
         "waivedAt": "2026-10-06T21:16:21+01:00"
+      },
+      {
+        "kind": "review-waiver",
+        "status": "waived",
+        "reference": "User instruction: do not present stills or a design first; build directly. Current request: complete BudgetLens redesign with Restate inspiration and generated brand assets.",
+        "revisionId": "r3-budgetlens-proof-panels",
+        "scope": [
+          "brand",
+          "hero",
+          "report-library",
+          "report-detail",
+          "upload",
+          "page"
+        ],
+        "waivedAt": "2026-10-06T22:36:28+01:00"
       }
     ]
   },

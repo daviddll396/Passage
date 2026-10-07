@@ -1,7 +1,13 @@
 <script setup>
 useHead({
   titleTemplate: (title) => title ? `${title} · BudgetLens` : 'BudgetLens',
-  meta: [{ name: 'description', content: 'Explore public budgets and ask grounded questions about the source documents.' }],
+  meta: [{ name: 'description', content: 'Explore public budgets, inspect published figures, and ask questions with source evidence.' }],
+  link: [
+    { rel: 'icon', type: 'image/svg+xml', href: '/brand/budgetlens-mark.svg' },
+    { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+    { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' },
+    { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap' },
+  ],
 });
 </script>
 

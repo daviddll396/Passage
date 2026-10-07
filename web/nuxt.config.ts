@@ -1,4 +1,5 @@
 export default defineNuxtConfig({
+  devtools: { enabled: false },
   css: ['~/assets/css/budgetlens.css'],
   runtimeConfig: {
     public: {
