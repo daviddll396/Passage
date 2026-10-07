@@ -9,7 +9,7 @@
         <nav class="bl-nav-links" aria-label="Main navigation">
           <NuxtLink class="bl-nav-link" to="/#reports">Reports</NuxtLink>
           <NuxtLink class="bl-nav-link" to="/#how-it-works">How it works</NuxtLink>
-          <NuxtLink class="bl-nav-cta" to="/upload">Analyze a PDF</NuxtLink>
+          <NuxtLink class="bl-nav-cta" to="/upload">Upload a PDF</NuxtLink>
         </nav>
       </header>
     </div>
@@ -26,7 +26,7 @@
       </div>
       <div class="bl-footer-links">
         <NuxtLink to="/#reports">Report library</NuxtLink>
-        <NuxtLink to="/upload">Analyze a PDF</NuxtLink>
+        <NuxtLink to="/upload">Upload a PDF</NuxtLink>
       </div>
     </footer>
   </div>

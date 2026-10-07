@@ -64,6 +64,9 @@
           "docs/design/DESIGN.md",
           "docs/design/study.md",
           "docs/design/design-gate.json",
+          "docs/design/evidence/target/home-desktop.png",
+          "docs/design/evidence/target/upload-desktop.png",
+          "docs/design/evidence/target/report-desktop.png",
           "docs/design/iterations/r3-budgetlens-proof-panels/direction.md",
           "docs/design/iterations/r3-budgetlens-proof-panels/asset-manifest.md",
           "docs/design/evidence/source/restate-home-1402x876.png",
@@ -85,9 +88,31 @@
           "web/public/images/budgetlens-report-folder.png"
         ],
         "inheritedPaths": []
+      },
+      {
+        "id": "r4-trajectory-lineart-prompt",
+        "parentId": "r3-budgetlens-proof-panels",
+        "iterationPath": "docs/design/iterations/r4-trajectory-lineart-prompt",
+        "scope": ["brand", "hero", "report-library", "report-detail", "upload", "page"],
+        "reason": "Replace the rejected visual direction with the user's Trajectory and Wrk references, a line-art identity, and a working document question composer in the hero.",
+        "changedPaths": [
+          "docs/design/DESIGN.md",
+          "docs/design/study.md",
+          "docs/design/design-gate.json",
+          "docs/design/iterations/r4-trajectory-lineart-prompt/direction.md",
+          "docs/design/iterations/r4-trajectory-lineart-prompt/asset-manifest.md",
+          "web/assets/css/budgetlens.css",
+          "web/components/BudgetQuestion.vue",
+          "web/components/BudgetShell.vue",
+          "web/pages/index.vue",
+          "web/pages/upload.vue",
+          "web/public/brand/budgetlens-mark.svg",
+          "web/public/images/budgetlens-report-lineart.png"
+        ],
+        "inheritedPaths": []
       }
     ],
-    "currentRevisionId": "r3-budgetlens-proof-panels",
+    "currentRevisionId": "r4-trajectory-lineart-prompt",
     "approvals": [
       {
         "kind": "review-waiver",
@@ -118,6 +143,14 @@
           "page"
         ],
         "waivedAt": "2026-10-06T22:36:28+01:00"
+      },
+      {
+        "kind": "review-waiver",
+        "status": "waived",
+        "reference": "User instruction: skip the still/design-first step and build directly; latest direction replaces the rejected previous design.",
+        "revisionId": "r4-trajectory-lineart-prompt",
+        "scope": ["brand", "hero", "report-library", "report-detail", "upload", "page"],
+        "waivedAt": "2026-10-06T23:13:03+01:00"
       }
     ]
   },

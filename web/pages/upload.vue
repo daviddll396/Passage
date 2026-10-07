@@ -79,7 +79,7 @@ async function analyzeReport() {
           <p>Upload a public budget PDF to extract key figures, then ask about the report and inspect the supporting evidence.</p>
         </div>
         <div class="upload-art" aria-hidden="true">
-          <img src="/images/budgetlens-report-folder.png" alt="" fetchpriority="high">
+          <img src="/images/budgetlens-report-lineart.png" alt="" fetchpriority="high">
         </div>
       </section>
 

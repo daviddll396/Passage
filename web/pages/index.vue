@@ -2,7 +2,7 @@
 import { computed, onMounted, ref } from 'vue';
 import { budgetRequest } from '../utils/budgetApi.js';
 
-useHead({ title: 'Public budgets, in clear focus' });
+useHead({ title: 'Understand public budgets' });
 const { public: { apiBase } } = useRuntimeConfig();
 const reports = ref([]);
 const loading = ref(true);
@@ -30,21 +30,20 @@ onMounted(loadReports);
     <main class="bl-main bl-home">
       <section class="home-hero" aria-labelledby="home-title">
         <div class="hero-copy">
-          <p class="bl-kicker">Public finance, made readable</p>
-          <h1 id="home-title">Public budgets,<br><span>in clear focus.</span></h1>
-          <p class="hero-lede">Find a figure. Ask the report. Follow every answer back to its source.</p>
+          <p class="bl-kicker">BudgetLens · public finance, in plain language</p>
+          <h1 id="home-title">Public budgets,<br><em>made legible.</em></h1>
+          <p class="hero-lede">Ask a report what you need to know. Follow each answer back to the source.</p>
           <div class="hero-actions">
-            <NuxtLink to="#reports" class="bl-button bl-button-primary">Explore reports</NuxtLink>
-            <NuxtLink to="/upload" class="bl-button bl-button-secondary">Analyze a PDF</NuxtLink>
+            <NuxtLink to="/upload" class="bl-button bl-button-primary">Upload your document</NuxtLink>
+            <NuxtLink to="#reports" class="hero-text-link">Browse public reports</NuxtLink>
           </div>
-          <p class="hero-note">Answers use report evidence. If a source is silent, BudgetLens says so.</p>
         </div>
 
-        <div class="hero-visual" :aria-busy="loading">
-          <img class="hero-artwork" src="/images/budgetlens-evidence-layers.png" alt="" fetchpriority="high">
-          <article v-if="featured" class="hero-proof-card" aria-label="Featured public report">
+        <figure class="hero-art" :aria-busy="loading">
+          <img class="hero-artwork" src="/images/budgetlens-report-lineart.png" alt="" fetchpriority="high">
+          <article v-if="featured" class="hero-proof-card" aria-label="A figure from the featured public report">
             <div class="proof-card-top">
-              <span class="proof-card-label">Featured report</span>
+              <span class="proof-card-label">In the report</span>
               <span class="proof-period">{{ featured.period || 'Public report' }}</span>
             </div>
             <p class="proof-source">{{ featured.sourceName || featured.organization || 'Source document' }}</p>
@@ -54,15 +53,26 @@ onMounted(loadReports);
               <strong>{{ featured.metrics[0].value }} <small>{{ featured.metrics[0].unit }}</small></strong>
               <small class="proof-page">{{ featured.metrics[0].sourcePage == null ? 'Page not identified' : `Page ${featured.metrics[0].sourcePage}` }}</small>
             </div>
-            <NuxtLink class="proof-link" :to="`/reports/${encodeURIComponent(featured.id)}`">Open this report <span aria-hidden="true">→</span></NuxtLink>
+            <NuxtLink class="proof-link" :to="`/reports/${encodeURIComponent(featured.id)}`">View report <span aria-hidden="true">→</span></NuxtLink>
           </article>
-          <div v-else-if="loading" class="hero-proof-card proof-loading" role="status">Loading the public report library</div>
-          <div v-else class="hero-proof-card proof-empty">
-            <p class="proof-card-label">Public report library</p>
-            <h2>{{ error ? 'The library is unavailable' : 'Start with a report of your own' }}</h2>
-            <p>{{ error || 'Upload a public budget PDF and ask about its figures or reporting period.' }}</p>
-            <button v-if="error" class="proof-link proof-retry" type="button" @click="loadReports">Try again</button>
-            <NuxtLink v-else class="proof-link" to="/upload">Analyze a PDF <span aria-hidden="true">→</span></NuxtLink>
+        </figure>
+
+        <div class="hero-question-wrap">
+          <BudgetQuestion
+            v-if="featured"
+            class="home-question"
+            compact
+            title="What would you like to know?"
+            :placeholder="`Ask a question about ${featured.title}...`"
+            :api-base="apiBase"
+            :ask-path="`/budget/reports/${encodeURIComponent(featured.id)}/ask`"
+            :suggestions="['What was the amount allocated to education?', 'How much was spent by October?']"
+          />
+          <div v-else class="hero-question-empty bl-panel" role="status">
+            <p class="bl-kicker">Ask a public report</p>
+            <h2>{{ loading ? 'Opening the report library…' : 'Bring a document to begin.' }}</h2>
+            <p>{{ error || 'Upload a PDF to ask questions and check the source behind each answer.' }}</p>
+            <NuxtLink to="/upload" class="bl-button bl-button-primary">Upload a document</NuxtLink>
           </div>
         </div>
       </section>

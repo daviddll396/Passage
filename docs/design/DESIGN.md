@@ -5,7 +5,7 @@
 - **Purpose:** Help people read public budget reports, inspect reported figures, and ask questions grounded in the source text.
 - **Audience:** People who need to understand budget documents without reading every page.
 - **Primary actions:** Open a public report or upload a PDF for private analysis.
-- **Current design revision:** `r3-budgetlens-proof-panels`.
+- **Current design revision:** `r4-trajectory-lineart-prompt`.
 - **Design gate:** `docs/design/design-gate.json`.
 - **Source study:** `docs/design/study.md`.
 - **Review scope:** The user waived mockup-first review and authorized direct implementation for this scope. The waiver is recorded against the current revision in the gate.
@@ -22,22 +22,23 @@
 
 ## Brand anchor
 
-- **Vibe:** Confident public-finance journal with the clarity of a technical product. Direct, source-first, and readable; avoid the generic startup dashboard look.
-- **Palette:** Forest Ink `#163300`, Lime Voltage `#9fe870`, Spruce `#054d28`, Linen Mist `#e2f6d5`, Paper `#ffffff`, Fog `#e8ebe6`, Charcoal `#454745`, Obsidian `#0e0f0c`, and page paper `#f7f8f3`. Forest leads; lime is a restrained action and evidence accent.
-- **Type:** Inter variable, weights 400–900, with the system sans stack as fallback. Use weight 800–900 and tight tracking for page titles, 600–800 for section labels, and 400–600 for body and values. The Google Fonts response must be verified in the browser.
-- **Logo:** Original 48px SVG page mark with one highlighted source line; the BudgetLens wordmark stays live text. File: `web/public/brand/budgetlens-mark.svg`.
-- **Shape:** 12–16px information panels, 22–26px feature panels, pill buttons and tags where their role benefits from a compact shape, hairline borders, no decorative shadow stack.
-- **Imagery:** Two generated paper illustrations support the hero and upload explanation. Their chart strokes are abstract decoration; all real figures remain HTML data from the API. Paths and prompts are in `docs/design/iterations/r3-budgetlens-proof-panels/asset-manifest.md`.
-- **Motion:** Static layout with short color and border transitions for hover/focus. No scroll-linked animation, pulsing indicators, shimmer, or floating decoration. Reduced motion disables smooth anchor scrolling and transitions.
+- **Vibe:** Airy public-finance editorial with a clear product interface. Use serif display headlines, thin rules, warm paper surfaces, and real report data.
+- **Palette:** Page paper `#f8f7ef`, ink `#203241`, forest `#203b39`, muted gray `#697782`, pale sage `#edf2dc`, peach and periwinkle accents, and lime `#d6ed9e` for limited emphasis.
+- **Type:** System sans for controls and body copy; Georgia for large editorial headings. Do not load a new font service.
+- **Logo:** Project-authored SVG document and magnifier mark with a live BudgetLens wordmark. File: `web/public/brand/budgetlens-mark.svg`.
+- **Shape:** Small to medium corner radii, hairline dividers, and a translucent hero question panel. Use blur only where text contrast remains strong.
+- **Imagery:** One original transparent line-art report illustration supports the hero and upload page. Actual report names, values, periods, pages, and AI evidence remain HTML data from the API. See `docs/design/iterations/r4-trajectory-lineart-prompt/asset-manifest.md`.
+- **Motion:** Use short color, border, and hover transitions. No looping or pulsing indicators, shimmer, or scroll-linked motion. Respect reduced-motion settings.
 
 ## Layout and page behavior
 
 ### Home
 
-- Use a compact forest navigation capsule.
-- Lead with one direct statement and one short product explanation.
-- Pair the headline with the generated paper illustration and a proof panel built from the featured report returned by the API.
-- The proof panel may show its actual title, source, period, first metric, unit, and page label. Never hard-code a sample value.
+- Use a light editorial navigation row with a visible PDF upload action.
+- Lead with one direct statement and short product explanation.
+- Show the featured report and its real source, period, metric, and page label beside the line-art illustration.
+- Place a glass question composer in the hero. Connect it to the featured report ask endpoint and keep answers and citations visible.
+- Keep a clear action for private PDF analysis.
 - Replace customer-logo claims with factual product properties: source-linked figures, evidence-backed answers, and private uploads.
 - Explain the source → question → evidence path, then show flexible report records.
 - Finish with one focused PDF-analysis action.
@@ -65,16 +66,16 @@
 
 ## Component donors and reuse
 
-- The Restate homepage contributes headline-first hierarchy, a short supporting message, a clear action pair, and product proof below the headline. Its code, copy, logo, colors, marks, and art are not reused.
+- Trajectory contributes airy editorial pacing, paper-like color fields, soft section transitions, and fine line art. The user-provided Wrk page contributes clear actions and real interface proof. Their code, copy, logo, colors, and artwork are not reused.
 - `BudgetReportCard.vue` reuses the existing Vue record-card component and refines the earlier Career1 listing-pattern adaptation from [shadcnblocks-vue](https://shadcnblocks-vue.com/preview?category=career). No external component code is copied.
 - `BudgetQuestion.vue` reuses the answer, citation, and follow-up hierarchy from the user-supplied streaming-answer example, with real API output only.
 - The upload keeps the native file input and existing API state flow. No component or animation dependency is added.
-- Component-source selection and reuse notes are in `docs/design/iterations/r3-budgetlens-proof-panels/direction.md`.
+- Component-source selection and reuse notes are in `docs/design/iterations/r4-trajectory-lineart-prompt/direction.md`.
 
 ## Rejected patterns
 
-- Pulsing circles, online/status dots, shimmer loaders, floating shapes, unnecessary gradients, generic AI sparkles, and decorative motion.
+- Pulsing circles, online/status dots, shimmer loaders, generic AI sparkles, and decorative motion.
 - Repeated rows of tiny labels or icon cards where a clear source/value hierarchy is stronger.
 - Invented figures, customer logos, unsupported causal claims, or uploaded documents presented as official.
-- Restate branding, assets, text, source code, or exact composition.
+- Trajectory or Wrk branding, assets, text, source code, or exact composition.
 - Decorative northeast arrows on actions; directional arrows remain only when they clarify navigation.
