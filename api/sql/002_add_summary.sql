@@ -1,0 +1,1 @@
+ALTER TABLE requests ADD COLUMN summary VARCHAR(180) NULL AFTER category;

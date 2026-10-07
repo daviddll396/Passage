@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="960" viewBox="0 0 1600 1200" role="img" aria-labelledby="title desc">
+  <title id="title">OpenRole identity deck, proposed direction</title>
+  <desc id="desc">Wordmark, palette, typography, image treatment and product card examples for review.</desc>
+  <rect width="1600" height="1200" fill="#F5F1E8"/>
+  <rect x="40" y="40" width="1520" height="1120" fill="none" stroke="#D4CDBF"/>
+  <g font-family="Arial, sans-serif" fill="#20231F">
+    <text x="88" y="105" font-size="14" font-weight="700" letter-spacing="3" fill="#547161">OPENROLE · IDENTITY DIRECTION</text>
+    <text x="88" y="160" font-family="Georgia, 'Times New Roman', serif" font-size="43">Clear work, clearly found.</text>
+    <text x="1510" y="105" font-size="12" text-anchor="end" fill="#777A70">PROPOSED · R1</text>
+    <line x1="88" y1="194" x2="1512" y2="194" stroke="#D4CDBF"/>
+
+    <text x="88" y="245" font-size="12" font-weight="700" letter-spacing="2" fill="#777A70">WORDMARK</text>
+    <text x="88" y="318" font-size="49" font-weight="700" letter-spacing="-2">openrole</text>
+    <circle cx="291" cy="294" r="6" fill="#EE5B35"/>
+    <text x="88" y="349" font-size="14" fill="#666B62">Lowercase wordmark, no separate icon in the first release.</text>
+    <text x="88" y="381" font-size="14" fill="#666B62">A small orange signal marks actions and new information.</text>
+
+    <text x="610" y="245" font-size="12" font-weight="700" letter-spacing="2" fill="#777A70">COLOUR</text>
+    <g font-size="12" fill="#20231F">
+      <rect x="610" y="268" width="198" height="72" fill="#F5F1E8" stroke="#D4CDBF"/><text x="624" y="362">Warm paper · #F5F1E8</text>
+      <rect x="824" y="268" width="198" height="72" fill="#20231F"/><text x="838" y="362">Ink · #20231F</text>
+      <rect x="1038" y="268" width="198" height="72" fill="#174735"/><text x="1052" y="362">Forest · #174735</text>
+      <rect x="1252" y="268" width="198" height="72" fill="#EE5B35"/><text x="1266" y="362">Signal · #EE5B35</text>
+    </g>
+    <text x="610" y="391" font-size="12" fill="#666B62">Use forest for primary actions; reserve orange for emphasis.</text>
+
+    <line x1="88" y1="425" x2="1512" y2="425" stroke="#D4CDBF"/>
+    <text x="88" y="470" font-size="12" font-weight="700" letter-spacing="2" fill="#777A70">TYPE ROLES</text>
+    <text x="88" y="532" font-family="Georgia, 'Times New Roman', serif" font-size="42">A clear next step.</text>
+    <text x="88" y="562" font-size="13" fill="#777A70">Display · Georgia / system serif fallback · proposed</text>
+    <text x="610" y="528" font-size="25" font-weight="700">Frontend Engineer</text>
+    <text x="610" y="559" font-size="14" fill="#555C53">Readable details. Direct labels. No inflated claims.</text>
+    <text x="610" y="585" font-size="12" fill="#777A70">Interface · system sans-serif stack · proposed</text>
+
+    <line x1="88" y1="625" x2="1512" y2="625" stroke="#D4CDBF"/>
+    <text x="88" y="669" font-size="12" font-weight="700" letter-spacing="2" fill="#777A70">IMAGE AND PRODUCT APPLICATION</text>
+    <image href="card-stack.png" x="88" y="695" width="555" height="370" preserveAspectRatio="xMidYMid slice"/>
+    <rect x="88" y="695" width="555" height="370" fill="none" stroke="#D4CDBF"/>
+    <text x="88" y="1093" font-size="12" fill="#666B62">Tactile stacked-card motif · generated proposal, not a real listing.</text>
+
+    <rect x="700" y="695" width="750" height="370" rx="3" fill="#FFFEFA" stroke="#D4CDBF"/>
+    <text x="736" y="742" font-size="11" font-weight="700" letter-spacing="1.8" fill="#547161">ROLE CARD · SAMPLE CONTENT</text>
+    <text x="736" y="794" font-family="Georgia, 'Times New Roman', serif" font-size="30">Frontend Engineer</text>
+    <text x="736" y="828" font-size="15" fill="#555C53">Company name · Lagos · Hybrid</text>
+    <line x1="736" y1="850" x2="1414" y2="850" stroke="#E3DED4"/>
+    <text x="736" y="887" font-size="13" fill="#555C53">Source shown clearly: external listing or recruiter submitted.</text>
+    <rect x="736" y="921" width="149" height="42" rx="3" fill="#174735"/>
+    <text x="766" y="947" font-size="13" font-weight="700" fill="#F7F4EB">View role</text>
+    <rect x="700" y="986" width="750" height="79" fill="#E9E4D9"/>
+    <text x="736" y="1018" font-size="12" font-weight="700" fill="#20231F">Surface rule</text>
+    <text x="736" y="1042" font-size="12" fill="#555C53">Keep imported job facts separate from recruiter-confirmed details.</text>
+  </g>
+</svg>

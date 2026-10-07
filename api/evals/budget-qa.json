@@ -1,0 +1,45 @@
+[
+  {
+    "name": "answer a value from the report",
+    "question": "What was Health's October spending?",
+    "evidence": [
+      { "label": "Health", "page": 1, "quote": "Name Health | OCTOBER 66 239 504 169.53" }
+    ],
+    "shouldAbstain": false,
+    "expectedCitationIndexes": [0],
+    "requiredAnswerText": ["66,239,504,169.53"],
+    "candidate": {
+      "answer": "The report lists Health's October spending as ₦66,239,504,169.53.",
+      "citationIndexes": [0]
+    }
+  },
+  {
+    "name": "abstain on a cause absent from the report",
+    "question": "Why was Health's spending at that level?",
+    "evidence": [
+      { "label": "Health", "page": 1, "quote": "Name Health | OCTOBER 66 239 504 169.53" }
+    ],
+    "shouldAbstain": true,
+    "expectedCitationIndexes": [],
+    "requiredAnswerText": ["does not provide enough information"],
+    "candidate": {
+      "answer": "The report does not provide enough information to explain the spending level.",
+      "citationIndexes": []
+    }
+  },
+  {
+    "name": "cite the same source for a year-to-date value",
+    "question": "How much had been paid for Education year to date?",
+    "evidence": [
+      { "label": "Health", "page": 1, "quote": "Name Health | PAYMENTS YTD 687 857 616 123.62" },
+      { "label": "Education", "page": 1, "quote": "Name Education | PAYMENTS YTD 1 830 924 173 157.64" }
+    ],
+    "shouldAbstain": false,
+    "expectedCitationIndexes": [1],
+    "requiredAnswerText": ["1,830,924,173,157.64"],
+    "candidate": {
+      "answer": "The report lists Education payments year to date as ₦1,830,924,173,157.64.",
+      "citationIndexes": [1]
+    }
+  }
+]

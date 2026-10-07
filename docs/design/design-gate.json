@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 2,
+  "phase": "build",
+  "project": {
+    "kind": "website",
+    "newWebsite": false,
+    "changeKind": "material-design",
+    "framework": "Nuxt 3 / Vue",
+    "nextAppRouter": false,
+    "referenceMode": "design-study"
+  },
+  "records": {
+    "contract": "docs/design/DESIGN.md",
+    "study": "docs/design/study.md",
+    "brandDeck": [],
+    "fullPageMocks": [],
+    "revisions": [
+      {
+        "id": "r1-openrole-identity",
+        "iterationPath": "docs/design/iterations/r1-openrole-identity",
+        "scope": ["brand"],
+        "reason": "Initial identity direction for OpenRole",
+        "changedPaths": [
+          "docs/design/iterations/r1-openrole-identity/card-stack.png",
+          "docs/design/iterations/r1-openrole-identity/direction.svg",
+          "docs/design/iterations/r1-openrole-identity/identity-v1.svg",
+          "docs/design/iterations/r1-openrole-identity/direction-v1.png",
+          "docs/design/iterations/r1-openrole-identity/identity-v1.png"
+        ],
+        "inheritedPaths": []
+      },
+      {
+        "id": "r2-budgetlens",
+        "parentId": "r1-openrole-identity",
+        "iterationPath": "docs/design/iterations/r2-budgetlens",
+        "scope": [
+          "brand",
+          "hero",
+          "report-library",
+          "report-detail",
+          "upload",
+          "page"
+        ],
+        "reason": "Replace the job search direction with BudgetLens and build directly under the user's review waiver.",
+        "changedPaths": [
+          "docs/design/iterations/r2-budgetlens/direction.md"
+        ],
+        "inheritedPaths": []
+      }
+    ],
+    "currentRevisionId": "r2-budgetlens",
+    "approvals": [
+      {
+        "kind": "review-waiver",
+        "status": "waived",
+        "reference": "User instruction: don't worry about giving me stills or a design first; go ahead and build.",
+        "revisionId": "r2-budgetlens",
+        "scope": [
+          "brand",
+          "hero",
+          "report-library",
+          "report-detail",
+          "upload",
+          "page"
+        ],
+        "waivedAt": "2026-10-06T21:16:21+01:00"
+      }
+    ]
+  },
+  "requirements": [],
+  "criticalInvariants": [
+    "Keep the Nuxt and Vue stack to meet the stated recruiter criterion.",
+    "Show verified public report values with their source.",
+    "Ground AI answers in report evidence and abstain when the report is silent.",
+    "Keep user-uploaded PDF files private and temporary."
+  ],
+  "deviations": [
+    {
+      "reason": "Keep the existing Nuxt 3 and Vue project because the recruiter feedback asks for a Vue or Nuxt project.",
+      "approvalReference": "User project brief based on recruiter feedback in this conversation",
+      "revisionId": "r2-budgetlens"
+    },
+    {
+      "reason": "Build directly without full-page stills or mockup review, as the user explicitly requested.",
+      "approvalReference": "Review waiver recorded for r2-budgetlens",
+      "revisionId": "r2-budgetlens"
+    }
+  ],
+  "sections": [],
+  "sectionOrder": []
+}

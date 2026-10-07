@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS requests (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  title VARCHAR(160) NOT NULL,
+  description TEXT NOT NULL,
+  location VARCHAR(160) NOT NULL,
+  category VARCHAR(80) NULL,
+  status ENUM('new', 'in_progress', 'resolved') NOT NULL DEFAULT 'new',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+);

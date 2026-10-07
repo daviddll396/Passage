@@ -1,0 +1,13 @@
+{
+  "name": "budgetlens-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev --host 0.0.0.0",
+    "build": "nuxt build",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "nuxt": "3.21.11"
+  }
+}
