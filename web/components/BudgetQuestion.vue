@@ -50,9 +50,7 @@ async function ask(value = question.value) {
 <template>
   <section class="question-card bl-panel" :class="{ 'question-card-compact': compact }" aria-labelledby="ask-title">
     <div class="question-intro">
-      <p class="bl-kicker">Ask this document</p>
       <h2 id="ask-title">{{ title }}</h2>
-      <p>Answers use this document only. Supporting passages appear when the source can verify an answer.</p>
     </div>
 
     <form class="question-form" @submit.prevent="ask()">
@@ -91,7 +89,7 @@ async function ask(value = question.value) {
           <span class="citation-label">{{ citation.label || 'Source passage' }}</span>
           <p v-if="citation.kind === 'metadata'">{{ citation.value }}</p>
           <p v-else>“{{ citation.quote }}”</p>
-          <small>{{ citation.kind === 'metadata' ? 'Report listing metadata' : citation.page == null ? 'Source page not identified' : `Page ${citation.page}` }}</small>
+          <small>{{ citation.kind === 'metadata' ? 'Document listing metadata' : citation.page == null ? 'Source page not identified' : `Page ${citation.page}` }}</small>
         </article>
       </div>
       <p v-else class="no-citation">No supporting passage was returned. Treat this answer as unverified.</p>

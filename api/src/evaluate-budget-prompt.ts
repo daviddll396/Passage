@@ -16,7 +16,7 @@ const cases = JSON.parse(
 ) as EvaluationCase[];
 let failed = 0;
 
-if (!/only from the supplied report evidence/i.test(BUDGET_QA_INSTRUCTIONS) ||
+if (!/only from the supplied document evidence/i.test(BUDGET_QA_INSTRUCTIONS) ||
   !/official report-listing field/i.test(BUDGET_QA_INSTRUCTIONS) ||
   !/use it for date or period questions/i.test(BUDGET_QA_INSTRUCTIONS) ||
   !/empty citationIndexes array/i.test(BUDGET_QA_INSTRUCTIONS) ||

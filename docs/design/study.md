@@ -4,7 +4,7 @@
 
 ## References and transferable patterns
 
-| Reference | Observed pattern | Use in BudgetLens |
+| Reference | Observed pattern | Use in Passage |
 |---|---|---|
 | [Trajectory](https://www.trajectory.ai/) | Airy editorial opening, warm pale color fields, restrained grid lines, and fine illustrated artwork. Later sections shift in scale and tone. | Keep the page spacious. Use paper colors, line art, and deliberate changes between sections. Do not copy the product's artwork or branding. |
 | User-supplied Wrk screenshot | Clear navigation, visible calls to action, and a large product interface shown as proof. | Make upload and example browsing easy to find. Show live source details rather than customer logos or invented metrics. |
@@ -24,7 +24,7 @@
 ## Visual decisions
 
 - Warm paper canvas; deep navy ink; coral and periwinkle accents. No green.
-- Georgia for large editorial headings and the existing system sans for body and controls.
+- Space Grotesk for display headings and DM Sans for body text and controls.
 - Fine rule borders, transparent line art, and a visibly frosted prompt bar.
 - Short hover, focus, and border transitions only. No pulsing dots, shimmer, or looping decoration.
 - Remove the category kicker above the home headline. Keep the hero copy brief and place the prompt directly after it on small screens.

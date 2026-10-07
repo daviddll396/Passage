@@ -1,6 +1,7 @@
 :root {
   color-scheme: light;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "DM Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --bl-display: "Space Grotesk", "DM Sans", ui-sans-serif, system-ui, sans-serif;
   color: #485264;
   background: #faf7f2;
   font-synthesis: none;
@@ -461,13 +462,13 @@ body { background: var(--bl-page); }
 .hero-copy h1 {
   margin: 2px 0 17px;
   color: var(--bl-ink);
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--bl-display);
   font-size: clamp(48px, 4.7vw, 64px);
   font-weight: 600;
   letter-spacing: -.055em;
   line-height: .98;
 }
-.hero-copy h1 em { color: #aa655d; font-weight: 500; }
+.hero-copy h1 em { color: #aa655d; font-style: normal; font-weight: 600; }
 .hero-lede { max-width: 490px; color: #4f5d68; font-size: 17px; line-height: 1.58; }
 .hero-actions { align-items: center; gap: 21px; margin-top: 23px; }
 .hero-text-link { color: var(--bl-ink); font-size: 14px; font-weight: 650; text-underline-offset: 4px; }
@@ -535,14 +536,14 @@ body { background: var(--bl-page); }
 .question-card-compact .question-form-bottom .bl-button { min-height: 39px; }
 .question-card-compact .question-suggestions { margin-top: 11px; }
 .hero-question-empty { padding: 21px 24px; border-color: rgba(255,255,255,.75); background: rgba(255,255,252,.78); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
-.hero-question-empty h2 { margin: 7px 0; color: var(--bl-ink); font: 600 22px/1.2 Georgia, "Times New Roman", serif; }
+.hero-question-empty h2 { margin: 7px 0; color: var(--bl-ink); font: 600 22px/1.2 var(--bl-display); }
 .hero-question-empty p:not(.bl-kicker) { margin: 0 0 13px; color: var(--bl-muted); font-size: 13px; }
 .trust-strip { border-color: var(--bl-line); }
 .trust-strip > div { padding: 20px 24px; }
 .trust-strip strong { color: var(--bl-ink); font-weight: 650; }
 .trust-strip span { color: var(--bl-muted); }
 .process-section { padding-block: 78px; }
-.section-intro h2, .section-heading h2 { color: var(--bl-ink); font-family: Georgia, "Times New Roman", serif; font-weight: 500; letter-spacing: -.045em; }
+.section-intro h2, .section-heading h2 { color: var(--bl-ink); font-family: var(--bl-display); font-weight: 600; letter-spacing: -.045em; }
 .process-grid { gap: 20px; }
 .process-item { border-top: 1px solid var(--bl-line); }
 .process-rule { width: 36px; height: 2px; background: #d37d6d; }
@@ -552,7 +553,7 @@ body { background: var(--bl-page); }
 .report-placeholder { border-color: var(--bl-line); background: rgba(255,255,252,.64); }
 .report-placeholder span { background: #e9e6ef; }
 .closing-cta { min-height: 230px; border: 1px solid #e1d9d8; border-radius: 20px; background: linear-gradient(110deg, #f7e8da, #f4e9e9 58%, #e9e8f7); color: var(--bl-ink); }
-.closing-copy h2 { color: var(--bl-ink); font-family: Georgia, "Times New Roman", serif; font-weight: 500; letter-spacing: -.045em; }
+.closing-copy h2 { color: var(--bl-ink); font-family: var(--bl-display); font-weight: 600; letter-spacing: -.045em; }
 .closing-cta .bl-kicker-inverse { color: var(--bl-spruce); }
 
 /* Report cards and source detail */
@@ -560,14 +561,14 @@ body { background: var(--bl-page); }
 .report-card:hover { border-color: #bbb8ce; box-shadow: 0 8px 24px rgba(34,38,68,.08); transform: translateY(-2px); }
 .record-source { color: var(--bl-spruce); }
 .record-period, .period-tag { background: #eeecf7; color: var(--bl-forest); }
-.report-card h3 { color: var(--bl-ink); font-family: Georgia, "Times New Roman", serif; font-weight: 500; letter-spacing: -.035em; }
+.report-card h3 { color: var(--bl-ink); font-family: var(--bl-display); font-weight: 600; letter-spacing: -.035em; }
 .record-figure { border-left: 1px solid #cf887a; background: #f7eee8; }
 .record-figure-label { color: var(--bl-spruce); }
 .record-figure strong, .report-action { color: var(--bl-forest); }
 .report-heading { border-color: var(--bl-line); }
-.report-heading h1 { color: var(--bl-ink); font-family: Georgia, "Times New Roman", serif; font-weight: 500; letter-spacing: -.045em; }
+.report-heading h1 { color: var(--bl-ink); font-family: var(--bl-display); font-weight: 600; letter-spacing: -.045em; }
 .figures-panel, .source-evidence { border-radius: 15px; }
-.panel-heading h2 { color: var(--bl-ink); font-family: Georgia, "Times New Roman", serif; font-weight: 500; letter-spacing: -.035em; }
+.panel-heading h2 { color: var(--bl-ink); font-family: var(--bl-display); font-weight: 600; letter-spacing: -.035em; }
 .report-summary { color: var(--bl-copy); }
 .figure-item, .extracted-metric { border-color: #e1dee5; background: #f7f5f2; }
 .figure-item strong, .extracted-metric strong { color: var(--bl-forest); }
@@ -579,7 +580,7 @@ body { background: var(--bl-page); }
 .citation-card { border-color: #e4e2d7; }
 
 /* Upload */
-.upload-heading h1 { color: var(--bl-ink); font-family: Georgia, "Times New Roman", serif; font-weight: 500; letter-spacing: -.045em; }
+.upload-heading h1 { color: var(--bl-ink); font-family: var(--bl-display); font-weight: 600; letter-spacing: -.045em; }
 .upload-heading h1 span { color: var(--bl-forest); }
 .upload-art { height: 300px; border: 0; border-radius: 0; background: transparent; }
 .upload-art img { object-fit: contain; }
@@ -592,8 +593,8 @@ body { background: var(--bl-page); }
 .upload-privacy { border-color: var(--bl-line); }
 .dark-aside { border-color: var(--bl-forest-deep); background: var(--bl-forest-deep); }
 .privacy-aside { background: rgba(255,255,252,.76); }
-.privacy-aside h3 { color: var(--bl-ink); font-family: Georgia, "Times New Roman", serif; font-weight: 500; }
-.extracted-report h2 { color: var(--bl-ink); font-family: Georgia, "Times New Roman", serif; font-weight: 500; letter-spacing: -.035em; }
+.privacy-aside h3 { color: var(--bl-ink); font-family: var(--bl-display); font-weight: 600; }
+.extracted-report h2 { color: var(--bl-ink); font-family: var(--bl-display); font-weight: 600; letter-spacing: -.035em; }
 
 .bl-footer { border-color: var(--bl-line); }
 .bl-footer .bl-brand { color: var(--bl-ink); }

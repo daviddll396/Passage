@@ -76,7 +76,7 @@ onMounted(loadReports);
 
       <section class="trust-strip" aria-label="How Passage works">
         <div><strong>Page-level citations</strong><span>Trace answers back to the source.</span></div>
-        <div><strong>Grounded answers</strong><span>Passage says when a document is silent.</span></div>
+        <div><strong>Grounded answers</strong><span>Flags missing evidence.</span></div>
         <div><strong>Private PDF sessions</strong><span>Uploads stay out of the example library.</span></div>
       </section>
 
@@ -99,7 +99,7 @@ onMounted(loadReports);
           <article class="process-item">
             <span class="process-rule" aria-hidden="true"></span>
             <h3>Check the evidence</h3>
-            <p>Review the cited passage or see when the report does not support an answer.</p>
+            <p>See the cited passage, or when the document does not support an answer.</p>
           </article>
         </div>
       </section>
@@ -129,7 +129,6 @@ onMounted(loadReports);
           <p>Bring a PDF to ask questions and check the cited passages.</p>
           <NuxtLink to="/upload" class="bl-button bl-button-primary">Upload a PDF</NuxtLink>
         </div>
-        <p class="library-source-note">This sample is a published public report. Answers appear separately with the passages that support them.</p>
       </section>
 
       <section class="closing-cta" aria-labelledby="closing-title">

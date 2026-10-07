@@ -41,7 +41,6 @@ onMounted(loadReport);
       <template v-else-if="report">
         <header class="report-heading">
           <div class="report-heading-copy">
-            <p class="bl-kicker">{{ report.sourceName || report.organization || 'Public source' }}</p>
             <h1>{{ report.title }}</h1>
             <p class="report-meta">{{ [report.organization, report.period].filter(Boolean).join(' · ') }}</p>
           </div>
@@ -72,14 +71,13 @@ onMounted(loadReport);
               <p class="figures-note">Figures are transcribed from the report. AI answers appear separately with their supporting evidence.</p>
             </section>
 
-            <section v-if="report.evidence?.length" class="source-evidence bl-panel" aria-labelledby="evidence-title">
+            <section v-if="report.evidence?.some((item) => item.quote?.trim())" class="source-evidence bl-panel" aria-labelledby="evidence-title">
               <div class="panel-heading">
                 <div>
-                  <p class="bl-kicker">Check the wording</p>
                   <h2 id="evidence-title">Evidence passages</h2>
                 </div>
               </div>
-              <blockquote v-for="(item, index) in report.evidence" :key="`${item.page}-${index}`" class="source-passage">
+              <blockquote v-for="(item, index) in report.evidence.filter((item) => item.quote?.trim())" :key="`${item.page}-${index}`" class="source-passage">
                 <span>{{ item.label || 'Report passage' }}</span>
                 <p>“{{ item.quote }}”</p>
                 <small>{{ item.page == null ? 'Source page not identified' : `Page ${item.page}` }}</small>
@@ -93,10 +91,6 @@ onMounted(loadReport);
               :ask-path="`/budget/reports/${encodeURIComponent(report.id)}/ask`"
               :suggestions="['Summarize the key points', 'What dates or figures should I note?']"
             />
-            <div class="source-note">
-              <span class="source-note-label">Answer scope</span>
-              <p>Answers use this source only. Passage says when the document does not provide enough information.</p>
-            </div>
           </aside>
         </div>
       </template>

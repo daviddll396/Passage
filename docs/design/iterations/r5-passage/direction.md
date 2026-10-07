@@ -15,7 +15,7 @@ Passage is a PDF question-and-answer reader. People ask a question, get a docume
 ## Visual system
 
 - Warm ivory, navy, indigo, coral, and periwinkle. No green.
-- Georgia display headlines with the existing system sans for UI and body text.
+- Space Grotesk display headings with DM Sans for UI and body text.
 - Hairline borders, soft paper panels, one frosted input surface, and small hover/focus movements.
 - No pulsing indicators, status dots, shimmer, or decorative AI sparkles.
 

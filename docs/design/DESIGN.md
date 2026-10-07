@@ -21,9 +21,9 @@
 
 ## Brand anchor
 
-- **Vibe:** Airy document editorial with a clear product interface. Use serif display headlines, thin rules, warm paper surfaces, and real source data.
+- **Vibe:** Airy document editorial with a clear product interface. Use confident geometric headings, thin rules, warm paper surfaces, and real source data.
 - **Palette:** Warm paper `#faf7f2`, navy ink `#20283d`, indigo `#34395f`, coral `#ef8b70`, periwinkle, and muted slate. Do not use green.
-- **Type:** System sans for controls and body copy; Georgia for large editorial headings. Do not load a new font service.
+- **Type:** Space Grotesk for headings and DM Sans for controls and body copy.
 - **Logo:** Generated open-page line-art mark with a live Passage wordmark. File: `web/public/brand/passage-mark.png`.
 - **Shape:** Small to medium corner radii, hairline dividers, and one clearly frosted prompt bar. Keep blur behind the input, with a readable fallback.
 - **Imagery:** Original line art supports the hero and upload page. Actual report names, values, periods, pages, and AI evidence remain HTML data from the API. See `docs/design/iterations/r5-passage/asset-manifest.md`.
