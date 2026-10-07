@@ -9,7 +9,8 @@
         <nav class="bl-nav-links" aria-label="Main navigation">
           <NuxtLink class="bl-nav-link" to="/#reports">Examples</NuxtLink>
           <NuxtLink class="bl-nav-link" to="/#how-it-works">How it works</NuxtLink>
-          <NuxtLink class="bl-nav-cta" to="/upload">Upload a document</NuxtLink>
+          <button v-if="route.path === '/'" class="bl-nav-cta" type="button" @click="requestUpload">Upload a document</button>
+          <NuxtLink v-else class="bl-nav-cta" to="/upload">Upload a document</NuxtLink>
         </nav>
       </header>
     </div>
@@ -31,3 +32,11 @@
     </footer>
   </div>
 </template>
+<script setup>
+const route = useRoute();
+const uploadRequest = useState('passage-upload-request', () => false);
+
+function requestUpload() {
+  uploadRequest.value = true;
+}
+</script>

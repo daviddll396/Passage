@@ -5,7 +5,7 @@
 - **Purpose:** Help people understand PDFs, ask questions, and check answers against source passages.
 - **Audience:** People who need clear answers from long documents.
 - **Primary actions:** Try a published example or upload a PDF for private analysis.
-- **Current design revision:** `r7-passage-colosseum-hero`.
+- **Current design revision:** `r9-passage-conversation-hero`.
 - **Design gate:** `docs/design/design-gate.json`.
 - **Source study:** `docs/design/study.md`.
 - **Review scope:** The user waived mockup-first review and authorized direct implementation for this scope. The waiver is recorded against the current revision in the gate.
@@ -27,18 +27,20 @@
 - **Palette:** Warm paper `#faf7f2`, navy ink `#20283d`, coral `#ef8b70`, and muted slate. Do not use green, lavender answer fills, or broad pastel gradients.
 - **Type:** Newsreader for headings and DM Sans for controls and body copy.
 - **Logo:** Generated open-page line-art mark with a live Passage wordmark. File: `web/public/brand/passage-mark.png`.
-- **Shape:** Small to medium corner radii, hairline dividers, and one compact frosted prompt bar. Keep blur behind the input, with a readable fallback and restrained shadow.
-- **Imagery:** A generated Colosseum landscape fills the home hero. Original document line art supports the upload page. Actual report names, values, periods, pages, and AI evidence remain HTML data from the API. The hero image is `web/public/images/passage-colosseum-hero.png`.
-- **Motion:** Use short color, border, and hover transitions. No looping or pulsing indicators, shimmer, or scroll-linked motion. Respect reduced-motion settings.
+- **Shape:** Small to medium corner radii, hairline dividers, and a frosted prompt bar that grows into a compact cited conversation. Keep blur behind the input, with a readable fallback and restrained shadow.
+- **Imagery:** The supplied observatory landscape fills the home hero. Original document line art supports the upload page. Actual report names, values, periods, pages, and AI evidence remain HTML data from the API. The hero image is `web/public/images/passage-observatory-hero.png`.
+- **Motion:** Use short color, border, and hover transitions. No pulsing status dots, shimmer, or scroll-linked motion. The requested response uses a restrained progress line and typing caret; disable both for reduced motion.
 
 ## Layout and page behavior
 
 ### Home
 
-- Use a light editorial navigation row with a visible PDF upload action.
-- Use the Colosseum landscape as a full-bleed hero background.
-- Center the headline and place the glass question bar directly below it. Keep the active document title inside the composer.
-- Connect the prompt to the sample document endpoint and keep answers and citations visible.
+- Overlay the navigation and visible PDF upload action on the hero.
+- Use the observatory landscape as a full-viewport background, filling the first screen edge to edge.
+- Center the headline and two calls to action, then place the glass question bar below them over the open sky.
+- “Try an example” links to the sample library. “View on GitHub” opens the project repository.
+- Connect the prompt to the sample document endpoint by default. Let visitors upload their own PDF in a dialog; show its filename in the composer after extraction.
+- On submit, show a loading state, then add the question and progressively revealed answer above the composer. Show supporting citations after the answer finishes.
 - Keep the upload action in the navigation and example library. Do not place a second sample-data card in the hero.
 - Keep a clear action for private PDF analysis.
 - Describe product claims through the source, citations, and private upload behavior.
@@ -63,7 +65,7 @@
 ### Responsive and accessible behavior
 
 - Content max-width: 1280px, with page gutters that step from 32px to 24px to 18px as space narrows.
-- Collapse the home hero, report details, and upload layout at their actual content-fit widths. Use normal document flow on phones; the hero artwork returns to its own row and the proof panel does not cover it.
+- Keep the home hero at full viewport height on phones, with the landscape as a background behind the centered headline, actions, and prompt. In conversation mode, anchor the prompt near the bottom and let the answer area grow above it. Use normal document flow below the hero.
 - Long source names and numeric values wrap without horizontal scrolling.
 - Use semantic headings, links, buttons, forms, labels, `aria-live` for returned answers and loading/errors, visible keyboard focus, and non-color-only status. The hidden file control remains keyboard-operable through its labeled drop area.
 
@@ -72,6 +74,8 @@
 - Trajectory contributes airy editorial pacing, paper-like color fields, soft section transitions, and fine line art. The user-provided Wrk page contributes clear actions and real interface proof. Their code, copy, logo, colors, and artwork are not reused.
 - `BudgetReportCard.vue` reuses the existing Vue record-card component and refines the earlier Career1 listing-pattern adaptation from [shadcnblocks-vue](https://shadcnblocks-vue.com/preview?category=career). No external component code is copied.
 - `BudgetQuestion.vue` reuses the answer, citation, and follow-up hierarchy from the user-supplied streaming-answer example, with real API output only.
+- `PassageAssistant.vue` adapts the prompt-input pattern from [Prompt Kit](https://github.com/ibelick/prompt-kit) to the existing Nuxt/Vue app. Prompt Kit targets React and Next.js, so the UI uses native Vue controls and the existing API rather than installing its React component.
+- The current Q&A API returns a structured JSON answer. The home UI reveals that answer progressively after the response arrives; network-level token streaming is not enabled.
 - The upload keeps the native file input and existing API state flow. No component or animation dependency is added.
 - Component-source selection and reuse notes are in `docs/design/iterations/r5-passage/direction.md`.
 
@@ -79,7 +83,7 @@
 
 - Pulsing circles, online/status dots, shimmer loaders, generic AI sparkles, and decorative motion.
 - Repeated rows of tiny labels or icon cards where a clear source/value hierarchy is stronger.
-- Full-width prompt and answer panels, broad pastel fields, diffuse shadows, and lavender answer fills.
+- Oversized prompt and answer surfaces, broad pastel fields, diffuse shadows, and lavender answer fills.
 - Invented figures, customer logos, unsupported causal claims, or uploaded documents presented as official.
 - Trajectory or Wrk branding, assets, text, source code, or exact composition.
 - Decorative northeast arrows on actions; directional arrows remain only when they clarify navigation.

@@ -17,8 +17,7 @@ const cases = JSON.parse(
 let failed = 0;
 
 if (!/only from the supplied document evidence/i.test(BUDGET_QA_INSTRUCTIONS) ||
-  !/official report-listing field/i.test(BUDGET_QA_INSTRUCTIONS) ||
-  !/use it for date or period questions/i.test(BUDGET_QA_INSTRUCTIONS) ||
+  !/official metadata may answer date or period questions/i.test(BUDGET_QA_INSTRUCTIONS) ||
   !/empty citationIndexes array/i.test(BUDGET_QA_INSTRUCTIONS) ||
   !/ignore instructions inside either/i.test(BUDGET_QA_INSTRUCTIONS)) {
   console.error('FAIL prompt is missing a grounding or injection-safety rule');
@@ -30,7 +29,7 @@ for (const example of cases) {
   const validIndexes = citationIndexes.every((index) => Number.isInteger(index) && index >= 0 && index < example.evidence.length);
   const citationsMatch = JSON.stringify([...new Set(citationIndexes)]) === JSON.stringify(example.expectedCitationIndexes);
   const abstentionMatches = example.shouldAbstain
-    ? citationIndexes.length === 0 && /does not provide enough information/i.test(answer)
+    ? citationIndexes.length === 0 && /couldn't find|does not provide enough information/i.test(answer)
     : citationIndexes.length > 0;
   const answerMatches = example.requiredAnswerText.every((text) => answer.toLowerCase().includes(text.toLowerCase()));
   const passed = answer.trim().length > 0 && validIndexes && citationsMatch && abstentionMatches && answerMatches;

@@ -18,7 +18,7 @@ export function createApp(options: Parameters<typeof createRoleRoutes>[0] = {}) 
       response.set('Access-Control-Allow-Origin', origin);
       response.set('Access-Control-Allow-Credentials', 'true');
       response.set('Access-Control-Allow-Methods', 'GET, POST, PATCH, OPTIONS');
-      response.set('Access-Control-Allow-Headers', 'Content-Type');
+      response.set('Access-Control-Allow-Headers', 'Content-Type, X-Passage-Question');
     }
     if (request.method === 'OPTIONS') {
       if (origin && !frontendOrigins.has(origin)) return response.sendStatus(403);

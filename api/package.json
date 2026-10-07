@@ -8,6 +8,7 @@
     "staff:create": "node --env-file=../.env --import tsx src/create-staff.ts",
     "eval:roles": "node --env-file=../.env --import tsx src/evaluate-roles.ts",
     "eval:budget:offline": "node --import tsx src/evaluate-budget-prompt.ts",
+    "eval:budget:live": "node --env-file=../.env --import tsx src/evaluate-budget-live.ts",
     "test": "npm run db:migrate && node --env-file=../.env --import tsx --test",
     "typecheck": "tsc --noEmit"
   },

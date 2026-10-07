@@ -33,22 +33,13 @@ onMounted(loadReports);
           <h1 id="home-title">Know what your<br><em>documents say.</em></h1>
         </div>
 
+        <div class="hero-actions">
+          <a class="hero-action-primary" href="#reports">Try an example</a>
+          <a class="hero-action-secondary" href="https://github.com/daviddll396/Passage" target="_blank" rel="noreferrer">View on GitHub <span aria-hidden="true">↗</span></a>
+        </div>
+
         <div class="hero-question-wrap">
-          <BudgetQuestion
-            v-if="featured"
-            class="home-question"
-            compact
-            title="Ask this document"
-            :source-label="[featured.title, featured.period].filter(Boolean).join(' · ')"
-            :placeholder="`What would you like to know about ${featured.title}?`"
-            :api-base="apiBase"
-            :ask-path="`/budget/reports/${encodeURIComponent(featured.id)}/ask`"
-          />
-          <div v-else class="hero-question-empty bl-panel" role="status">
-            <h2>{{ loading ? 'Opening the examples…' : 'Bring a PDF to begin.' }}</h2>
-            <p>{{ error || 'Ask questions about a document and check the source behind each answer.' }}</p>
-            <NuxtLink to="/upload" class="bl-button bl-button-primary">Upload a PDF</NuxtLink>
-          </div>
+          <PassageAssistant :api-base="apiBase" :report="featured" />
         </div>
       </section>
 

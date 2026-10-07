@@ -15,7 +15,7 @@ Passage helps people understand PDFs. Visitors can explore a published example o
 - PDF extraction returns structured details and page evidence. It can return no structured details when a document has none, while still requiring citable page evidence.
 - Answers use extracted evidence and validated citation indexes. If the document does not answer the question, the API returns an abstention without citations.
 - The default model is `gemini-3.5-flash-lite`. Set `GEMINI_MODEL` in `.env` to use another model that supports PDF input and structured output.
-- Uploaded PDFs are limited to 8 MB. The original PDF is sent to Gemini for extraction and then discarded by the API. Extracted upload data stays in process memory for 30 minutes. It is not in the public example library.
+- Uploaded PDFs are limited to 8 MB. The browser keeps the original PDF in the current tab. The API sends it to Gemini for extraction and discards the bytes; if extracted evidence cannot answer a question, the browser resends that same PDF for a source-grounded answer. The API keeps only the extracted report and a file digest in process memory for 30 minutes. Private uploads are not in the public example library.
 
 The temporary upload session is held by one API process. This is suitable for the local demo. A multi-instance deployment needs shared, expiring session storage.
 
@@ -25,7 +25,11 @@ The seeded October 2025 Federal Government of Nigeria budget performance report 
 
 ## Prompt evaluation
 
-Run `npm run eval:budget:offline` in `api` to check prompt safeguards and three fixed answer cases. This check does not call Gemini or use the API key.
+Run `npm run eval:budget:offline` in `api` for a quick local check of prompt safeguards and five fixed expected cases. It does not call Gemini.
+
+Run `npm run eval:budget:live` in `api` to send those five cases through the configured Gemini model and check answer content, citations, and abstention. This makes five Gemini requests. To rerun one case, add a name filter, for example `npm run eval:budget:live -- "year-to-date"`.
+
+The live evaluation checks the extracted-evidence Q&A prompt with prepared budget-report evidence. It does not yet evaluate PDF extraction or the full-PDF fallback against uploaded files.
 
 ## Stack
 

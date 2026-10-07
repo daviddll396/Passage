@@ -18,7 +18,9 @@
       {
         "id": "r1-openrole-identity",
         "iterationPath": "docs/design/iterations/r1-openrole-identity",
-        "scope": ["brand"],
+        "scope": [
+          "brand"
+        ],
         "reason": "Initial identity direction for OpenRole",
         "changedPaths": [
           "docs/design/iterations/r1-openrole-identity/card-stack.png",
@@ -93,7 +95,14 @@
         "id": "r4-trajectory-lineart-prompt",
         "parentId": "r3-budgetlens-proof-panels",
         "iterationPath": "docs/design/iterations/r4-trajectory-lineart-prompt",
-        "scope": ["brand", "hero", "report-library", "report-detail", "upload", "page"],
+        "scope": [
+          "brand",
+          "hero",
+          "report-library",
+          "report-detail",
+          "upload",
+          "page"
+        ],
         "reason": "Replace the rejected visual direction with the user's Trajectory and Wrk references, a line-art identity, and a working document question composer in the hero.",
         "changedPaths": [
           "docs/design/DESIGN.md",
@@ -115,7 +124,15 @@
         "id": "r5-passage",
         "parentId": "r4-trajectory-lineart-prompt",
         "iterationPath": "docs/design/iterations/r5-passage",
-        "scope": ["brand", "hero", "report-library", "report-detail", "upload", "document-qa", "page"],
+        "scope": [
+          "brand",
+          "hero",
+          "report-library",
+          "report-detail",
+          "upload",
+          "document-qa",
+          "page"
+        ],
         "reason": "Rebrand the product for general PDF understanding, remove green, add the requested generated logo and visible glass prompt bar, and allow documents with citable evidence but no numeric details.",
         "changedPaths": [
           "docs/design/DESIGN.md",
@@ -144,7 +161,13 @@
         "id": "r6-passage-source-context",
         "parentId": "r5-passage",
         "iterationPath": "docs/design/iterations/r6-passage-source-context",
-        "scope": ["brand", "hero", "report-detail", "upload", "document-qa"],
+        "scope": [
+          "brand",
+          "hero",
+          "report-detail",
+          "upload",
+          "document-qa"
+        ],
         "reason": "Respond to direct feedback by removing lavender panels and diffuse gradients, showing the active source in the composer, and separating valid abstentions from unsupported answers.",
         "changedPaths": [
           "docs/design/DESIGN.md",
@@ -164,7 +187,10 @@
         "id": "r7-passage-colosseum-hero",
         "parentId": "r6-passage-source-context",
         "iterationPath": "docs/design/iterations/r7-passage-colosseum-hero",
-        "scope": ["hero", "page"],
+        "scope": [
+          "hero",
+          "page"
+        ],
         "reason": "Use the generated Colosseum landscape as the home hero background and center the heading and question composer over it.",
         "changedPaths": [
           "docs/design/DESIGN.md",
@@ -177,9 +203,53 @@
           "web/public/images/passage-colosseum-hero.png"
         ],
         "inheritedPaths": []
+      },
+      {
+        "id": "r8-passage-observatory-hero",
+        "parentId": "r7-passage-colosseum-hero",
+        "iterationPath": "docs/design/iterations/r8-passage-observatory-hero",
+        "scope": [
+          "hero",
+          "page"
+        ],
+        "reason": "Replace the Colosseum with the user-supplied observatory image and make the home hero fill the viewport.",
+        "changedPaths": [
+          "docs/design/DESIGN.md",
+          "docs/design/study.md",
+          "docs/design/design-gate.json",
+          "docs/design/iterations/r8-passage-observatory-hero/direction.md",
+          "web/assets/css/budgetlens.css",
+          "web/public/images/passage-observatory-hero.png"
+        ],
+        "inheritedPaths": []
+      },
+      {
+        "id": "r9-passage-conversation-hero",
+        "parentId": "r8-passage-observatory-hero",
+        "iterationPath": "docs/design/iterations/r9-passage-conversation-hero",
+        "scope": [
+          "hero",
+          "upload",
+          "document-qa",
+          "page"
+        ],
+        "reason": "Add centered example and GitHub actions, an upload dialog, an attached-file prompt, and a growing conversation view.",
+        "changedPaths": [
+          "docs/design/DESIGN.md",
+          "docs/design/study.md",
+          "docs/design/design-gate.json",
+          "docs/design/iterations/r9-passage-conversation-hero/direction.md",
+          "web/assets/css/budgetlens.css",
+          "web/components/BudgetShell.vue",
+          "web/components/PassageAssistant.vue",
+          "web/pages/index.vue"
+        ],
+        "inheritedPaths": [
+          "web/public/images/passage-observatory-hero.png"
+        ]
       }
     ],
-    "currentRevisionId": "r7-passage-colosseum-hero",
+    "currentRevisionId": "r9-passage-conversation-hero",
     "approvals": [
       {
         "kind": "review-waiver",
@@ -216,7 +286,14 @@
         "status": "waived",
         "reference": "User instruction: skip the still/design-first step and build directly; latest direction replaces the rejected previous design.",
         "revisionId": "r4-trajectory-lineart-prompt",
-        "scope": ["brand", "hero", "report-library", "report-detail", "upload", "page"],
+        "scope": [
+          "brand",
+          "hero",
+          "report-library",
+          "report-detail",
+          "upload",
+          "page"
+        ],
         "waivedAt": "2026-10-06T23:13:03+01:00"
       },
       {
@@ -224,7 +301,15 @@
         "status": "waived",
         "reference": "User requested direct implementation of a brand, palette, positioning, and hero prompt correction.",
         "revisionId": "r5-passage",
-        "scope": ["brand", "hero", "report-library", "report-detail", "upload", "document-qa", "page"],
+        "scope": [
+          "brand",
+          "hero",
+          "report-library",
+          "report-detail",
+          "upload",
+          "document-qa",
+          "page"
+        ],
         "waivedAt": "2026-10-06T23:49:51+01:00"
       },
       {
@@ -232,7 +317,13 @@
         "status": "waived",
         "reference": "Existing user instruction: build directly without presenting stills or a design first; current iteration fixes the rejected treatment.",
         "revisionId": "r6-passage-source-context",
-        "scope": ["brand", "hero", "report-detail", "upload", "document-qa"],
+        "scope": [
+          "brand",
+          "hero",
+          "report-detail",
+          "upload",
+          "document-qa"
+        ],
         "waivedAt": "2026-10-07T03:43:48+01:00"
       },
       {
@@ -240,8 +331,35 @@
         "status": "waived",
         "reference": "User requested the generated Colosseum landscape as the hero background with centered heading and prompt.",
         "revisionId": "r7-passage-colosseum-hero",
-        "scope": ["hero", "page"],
+        "scope": [
+          "hero",
+          "page"
+        ],
         "waivedAt": "2026-10-07T04:00:49+01:00"
+      },
+      {
+        "kind": "review-waiver",
+        "status": "waived",
+        "reference": "Existing user instruction: build directly without presenting stills or a design first; current request specifies the supplied full-screen hero image.",
+        "revisionId": "r8-passage-observatory-hero",
+        "scope": [
+          "hero",
+          "page"
+        ],
+        "waivedAt": "2026-10-07T03:30:41.180Z"
+      },
+      {
+        "kind": "review-waiver",
+        "status": "waived",
+        "reference": "Existing user instruction: build directly without presenting stills or a design first; current request specifies the landing actions, upload dialog, and conversation behavior.",
+        "revisionId": "r9-passage-conversation-hero",
+        "scope": [
+          "hero",
+          "upload",
+          "document-qa",
+          "page"
+        ],
+        "waivedAt": "2026-10-07T03:53:43.583Z"
       }
     ]
   },

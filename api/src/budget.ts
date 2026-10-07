@@ -1,9 +1,9 @@
-import { randomBytes } from 'node:crypto';
+import { createHash, randomBytes } from 'node:crypto';
 import express from 'express';
 import type { Request, Response } from 'express';
 import type { RowDataPacket } from 'mysql2';
 import { db } from './db.js';
-import { answerBudgetQuestion, extractBudgetReport } from './budget-ai.js';
+import { answerBudgetQuestion, answerBudgetQuestionFromPdf, extractBudgetReport } from './budget-ai.js';
 import type { BudgetEvidence, BudgetMetric, BudgetReport } from './budget-ai.js';
 
 const PDF_LIMIT = 8 * 1024 * 1024;
@@ -25,6 +25,7 @@ interface BudgetRow extends RowDataPacket {
 
 interface TemporaryReport {
   report: Omit<BudgetReport, 'id'>;
+  pdfDigest: string;
   expiresAt: number;
 }
 
@@ -110,6 +111,11 @@ function validQuestion(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0 && value.trim().length <= 1_000;
 }
 
+function validPdf(request: Request, value: unknown): value is Buffer {
+  return request.is('application/pdf') === 'application/pdf' && Buffer.isBuffer(value) && value.length >= 8 &&
+    value.subarray(0, 5).toString('ascii') === '%PDF-';
+}
+
 function logBudgetFailure(action: string, error: unknown) {
   const reason = error instanceof Error ? error.message : 'unknown error';
   console.error(`[Passage] ${action} failed: ${reason}`);
@@ -129,6 +135,7 @@ export function createBudgetRoutes() {
   const router = express.Router();
   const limitUploads = createRateLimiter(3, 10 * 60_000);
   const limitQuestions = createRateLimiter(12, 60_000);
+  const limitSourceQuestions = createRateLimiter(4, 60_000);
 
   router.get('/reports', async (_request, response) => {
     try {
@@ -160,7 +167,7 @@ export function createBudgetRoutes() {
 
   router.post('/uploads', limitUploads, express.raw({ type: 'application/pdf', limit: PDF_LIMIT }), async (request, response) => {
     const pdf: unknown = request.body;
-    if (!request.is('application/pdf') || !Buffer.isBuffer(pdf) || pdf.length < 8 || pdf.subarray(0, 5).toString('ascii') !== '%PDF-') {
+    if (!validPdf(request, pdf)) {
       return response.status(400).json({ error: 'Upload a valid PDF file up to 8 MB' });
     }
 
@@ -172,7 +179,11 @@ export function createBudgetRoutes() {
         if (oldest) temporaryReports.delete(oldest);
       }
       const uploadId = randomBytes(24).toString('base64url');
-      temporaryReports.set(uploadId, { report: extracted, expiresAt: Date.now() + UPLOAD_TTL_MS });
+      temporaryReports.set(uploadId, {
+        report: extracted,
+        pdfDigest: createHash('sha256').update(pdf).digest('hex'),
+        expiresAt: Date.now() + UPLOAD_TTL_MS,
+      });
       return response.status(201).json({
         uploadId,
         report: {
@@ -218,6 +229,27 @@ export function createBudgetRoutes() {
       return response.json(await answerBudgetQuestion(question.trim(), temporary.report));
     } catch (error) {
       logBudgetFailure('Uploaded report Q&A', error);
+      return response.status(502).json({ error: 'Unable to answer from this document right now' });
+    }
+  });
+
+  router.post('/uploads/:uploadId/ask-source', limitSourceQuestions, express.raw({ type: 'application/pdf', limit: PDF_LIMIT }), async (request, response) => {
+    const uploadId = request.params.uploadId;
+    const question = request.get('X-Passage-Question');
+    const pdf: unknown = request.body;
+    if (!validQuestion(question)) return response.status(400).json({ error: 'X-Passage-Question must contain 1 to 1,000 characters' });
+    if (typeof uploadId !== 'string' || !/^[A-Za-z0-9_-]{32}$/.test(uploadId)) return response.status(400).json({ error: 'A valid upload ID is required' });
+    if (!validPdf(request, pdf)) return response.status(400).json({ error: 'Upload a valid PDF file up to 8 MB' });
+    pruneTemporaryReports();
+    const temporary = temporaryReports.get(uploadId);
+    if (!temporary) return response.status(404).json({ error: 'This upload has expired. Upload the PDF again to continue.' });
+    if (createHash('sha256').update(pdf).digest('hex') !== temporary.pdfDigest) {
+      return response.status(400).json({ error: 'This PDF does not match the uploaded document' });
+    }
+    try {
+      return response.json(await answerBudgetQuestionFromPdf(question.trim(), pdf));
+    } catch (error) {
+      logBudgetFailure('Uploaded PDF source Q&A', error);
       return response.status(502).json({ error: 'Unable to answer from this document right now' });
     }
   });

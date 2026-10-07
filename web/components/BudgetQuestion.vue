@@ -91,9 +91,9 @@ async function ask(value = question.value) {
         <p class="citation-heading">Supporting evidence</p>
         <article v-for="(citation, index) in citations" :key="`${citation.kind || 'document'}-${citation.page}-${index}`" class="citation-card">
           <span class="citation-label">{{ citation.label || 'Source passage' }}</span>
-          <p v-if="citation.kind === 'metadata'">{{ citation.value }}</p>
+          <p v-if="citation.kind === 'summary' || citation.kind === 'metadata'">{{ citation.value }}</p>
           <p v-else>“{{ citation.quote }}”</p>
-          <small>{{ citation.kind === 'metadata' ? 'Document listing metadata' : citation.page == null ? 'Source page not identified' : `Page ${citation.page}` }}</small>
+          <small>{{ citation.kind === 'summary' ? 'Extracted summary, not a page quotation' : citation.kind === 'metadata' ? 'Document listing metadata' : citation.page == null ? 'Source page not identified' : `Page ${citation.page}` }}</small>
         </article>
       </div>
       <p v-else-if="!abstained" class="no-citation">No supporting passage was returned.</p>

@@ -6,7 +6,7 @@ useHead({
     { rel: 'icon', type: 'image/png', href: '/brand/passage-mark.png' },
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
     { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' },
-    { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&family=Newsreader:opsz,wght@6..72,400..700&display=swap' },
+    { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&family=Newsreader:opsz,wght@6..72,400..700&family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap' },
   ],
 });
 </script>
