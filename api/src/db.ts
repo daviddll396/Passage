@@ -1,8 +1,9 @@
 import mysql from 'mysql2/promise';
 
 export const db = mysql.createPool({
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT ?? 3306),
+  ...(process.env.DB_SOCKET_PATH
+    ? { socketPath: process.env.DB_SOCKET_PATH }
+    : { host: process.env.DB_HOST, port: Number(process.env.DB_PORT ?? 3306) }),
   database: process.env.DB_NAME,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,

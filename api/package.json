@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "npm run db:migrate && node --env-file=../.env --import tsx --watch src/server.ts",
     "db:migrate": "node --env-file=../.env --import tsx src/migrate.ts",
+    "build": "tsc --noEmit false --rootDir src --outDir dist",
+    "start": "node dist/server.js",
     "eval:budget:offline": "node --import tsx src/evaluate-budget-prompt.ts",
     "eval:budget:live": "node --env-file=../.env --import tsx src/evaluate-budget-live.ts",
     "test": "npm run db:migrate && node --env-file=../.env --import tsx --test",
