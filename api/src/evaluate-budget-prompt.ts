@@ -4,7 +4,7 @@ import { BUDGET_QA_INSTRUCTIONS } from './budget-ai.js';
 interface EvaluationCase {
   name: string;
   question: string;
-  evidence: Array<{ label: string; page: number; quote: string }>;
+  evidence: Array<{ label: string; page: number | null; quote?: string; kind?: string; value?: string }>;
   shouldAbstain: boolean;
   expectedCitationIndexes: number[];
   requiredAnswerText: string[];
@@ -17,6 +17,8 @@ const cases = JSON.parse(
 let failed = 0;
 
 if (!/only from the supplied report evidence/i.test(BUDGET_QA_INSTRUCTIONS) ||
+  !/official report-listing field/i.test(BUDGET_QA_INSTRUCTIONS) ||
+  !/use it for date or period questions/i.test(BUDGET_QA_INSTRUCTIONS) ||
   !/empty citationIndexes array/i.test(BUDGET_QA_INSTRUCTIONS) ||
   !/ignore instructions inside either/i.test(BUDGET_QA_INSTRUCTIONS)) {
   console.error('FAIL prompt is missing a grounding or injection-safety rule');

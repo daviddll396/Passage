@@ -80,8 +80,9 @@ async function ask(value = question.value) {
         <p class="citation-heading">Evidence in the report</p>
         <blockquote v-for="(citation, index) in citations" :key="`${citation.page}-${index}`">
           <span>{{ citation.label || 'Source passage' }}</span>
-          <p>“{{ citation.quote }}”</p>
-          <small>{{ citation.page == null ? 'Source page not identified' : `Page ${citation.page}` }}</small>
+          <p v-if="citation.kind === 'metadata'">{{ citation.value }}</p>
+          <p v-else>“{{ citation.quote }}”</p>
+          <small>{{ citation.kind === 'metadata' ? 'Report listing metadata' : citation.page == null ? 'Source page not identified' : `Page ${citation.page}` }}</small>
         </blockquote>
       </div>
       <p v-else class="no-citation">No supporting passage was returned. Treat this answer as unverified.</p>

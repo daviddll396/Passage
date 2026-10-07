@@ -41,5 +41,19 @@
       "answer": "The report lists Education payments year to date as ₦1,830,924,173,157.64.",
       "citationIndexes": [1]
     }
+  },
+  {
+    "name": "answer the report period from verified listing metadata",
+    "question": "What's the time period of this budget?",
+    "evidence": [
+      { "kind": "metadata", "label": "Report period", "page": null, "value": "October 2025" }
+    ],
+    "shouldAbstain": false,
+    "expectedCitationIndexes": [0],
+    "requiredAnswerText": ["October 2025"],
+    "candidate": {
+      "answer": "This report covers October 2025.",
+      "citationIndexes": [0]
+    }
   }
 ]

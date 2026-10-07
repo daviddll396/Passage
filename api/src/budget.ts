@@ -110,6 +110,11 @@ function validQuestion(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0 && value.trim().length <= 1_000;
 }
 
+function logBudgetFailure(action: string, error: unknown) {
+  const reason = error instanceof Error ? error.message : 'unknown error';
+  console.error(`[BudgetLens] ${action} failed: ${reason}`);
+}
+
 async function findPublishedReport(id: string) {
   const [rows] = await db.execute<BudgetRow[]>(
     `SELECT id, title, organization, period, summary, source_name, source_url,
@@ -178,7 +183,8 @@ export function createBudgetRoutes() {
           publishedAt: null,
         },
       });
-    } catch {
+    } catch (error) {
+      logBudgetFailure('PDF extraction', error);
       return response.status(502).json({ error: 'Unable to extract cited information from this PDF right now' });
     }
   });
@@ -194,7 +200,8 @@ export function createBudgetRoutes() {
       const report = reportFromRow(row, true);
       const answer = await answerBudgetQuestion(question.trim(), report);
       return response.json(answer);
-    } catch {
+    } catch (error) {
+      logBudgetFailure('Published report Q&A', error);
       return response.status(502).json({ error: 'Unable to answer from this report right now' });
     }
   });
@@ -209,7 +216,8 @@ export function createBudgetRoutes() {
     if (!temporary) return response.status(404).json({ error: 'This upload has expired. Upload the PDF again to continue.' });
     try {
       return response.json(await answerBudgetQuestion(question.trim(), temporary.report));
-    } catch {
+    } catch (error) {
+      logBudgetFailure('Uploaded report Q&A', error);
       return response.status(502).json({ error: 'Unable to answer from this report right now' });
     }
   });

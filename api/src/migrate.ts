@@ -42,6 +42,9 @@ try {
   const budgetReportSeed = await readFile(new URL('../sql/009_seed_budget_report.sql', import.meta.url), 'utf8');
   await db.query(budgetReportSeed);
 
+  const budgetPeriodEvidence = await readFile(new URL('../sql/010_add_budget_period_metadata.sql', import.meta.url), 'utf8');
+  await db.query(budgetPeriodEvidence);
+
   const [sessionColumns] = await db.query<RowDataPacket[]>('SHOW COLUMNS FROM sessions');
   const expectedSessionColumns = [
     ['token_hash', 'binary(32)', 'NO'],
