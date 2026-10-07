@@ -1,7 +1,7 @@
 :root {
   color-scheme: light;
-  font-family: "DM Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --bl-display: "Newsreader", Georgia, serif;
+  font-family: Manrope, ui-sans-serif, system-ui, sans-serif;
+  --bl-display: "Instrument Serif", Georgia, serif;
   color: #485264;
   background: #faf7f2;
   font-synthesis: none;
@@ -673,7 +673,7 @@ body { background: var(--bl-page); }
   transition: border-color .18s ease, box-shadow .18s ease;
 }
 .passage-prompt:focus-within { border-color: #fff; box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 12px 28px rgba(18,27,43,.18), 0 0 0 3px rgba(239,139,112,.22); }
-.passage-prompt textarea { display: block; width: 100%; min-height: 70px; max-height: 220px; padding: 5px 3px 12px; resize: vertical; border: 0; outline: 0; background: transparent; color: var(--bl-ink); font: 15px/1.55 "DM Sans", sans-serif; }
+.passage-prompt textarea { display: block; width: 100%; min-height: 70px; max-height: 220px; padding: 5px 3px 12px; resize: vertical; border: 0; outline: 0; background: transparent; color: var(--bl-ink); font-family: inherit; font-size: 15px; line-height: 1.55; }
 .passage-prompt textarea::placeholder { color: #545e6e; opacity: .88; }
 .prompt-actions { display: flex; min-height: 46px; align-items: center; gap: 12px; padding-top: 10px; border-top: 1px solid rgba(32,40,61,.16); }
 .prompt-actions button { border: 0; cursor: pointer; font: inherit; }
@@ -727,7 +727,7 @@ body { background: var(--bl-page); }
 .upload-dialog-privacy { margin: 14px 0 0; color: #626b77; font-size: 12px; line-height: 1.55; }
 .upload-dialog-error { margin: 12px 0 0; color: var(--bl-danger); font-size: 13px; }
 .upload-dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 19px; }
-.upload-dialog-actions button { min-height: 42px; padding: 0 16px; border-radius: 999px; cursor: pointer; font-family: "DM Sans", sans-serif; font-size: 13px; font-weight: 650; }
+.upload-dialog-actions button { min-height: 42px; padding: 0 16px; border-radius: 999px; cursor: pointer; font-size: 13px; font-weight: 650; }
 .dialog-cancel { border: 1px solid #bfc2c9; background: transparent; color: var(--bl-ink); }
 .dialog-confirm { border: 1px solid var(--bl-ink); background: var(--bl-ink); color: #fffdf9; }
 .dialog-confirm:hover:not(:disabled) { background: #34415b; }
@@ -767,8 +767,6 @@ body { background: var(--bl-page); }
 
 /* Passage interior and full-bleed home layout. */
 .bl-page { font-family: Manrope, ui-sans-serif, system-ui, sans-serif; }
-:root { --bl-display: "Instrument Serif", Georgia, serif; }
-.passage-prompt textarea, .upload-dialog-actions button { font-family: inherit; }
 .bl-page:has(.bl-home) .bl-home { width: 100%; max-width: none; padding: 0 0 88px; }
 .bl-page:has(.bl-home) .home-hero { width: 100%; }
 .bl-page:has(.bl-home) .trust-strip,

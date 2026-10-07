@@ -26,7 +26,7 @@ onMounted(loadReports);
 </script>
 
 <template>
-  <BudgetShell>
+  <PassageShell>
     <main class="bl-main bl-home">
       <section class="home-hero" aria-labelledby="home-title">
         <div class="hero-copy">
@@ -107,5 +107,5 @@ onMounted(loadReports);
         </div>
       </section>
     </main>
-  </BudgetShell>
+  </PassageShell>
 </template>

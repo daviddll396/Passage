@@ -27,7 +27,7 @@ onMounted(loadReport);
 </script>
 
 <template>
-  <BudgetShell>
+  <PassageShell>
     <main class="bl-main report-main">
       <NuxtLink class="back-link" to="/#reports"><span aria-hidden="true">←</span> Examples</NuxtLink>
 
@@ -96,5 +96,5 @@ onMounted(loadReport);
         </div>
       </template>
     </main>
-  </BudgetShell>
+  </PassageShell>
 </template>

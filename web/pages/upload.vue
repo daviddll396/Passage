@@ -68,7 +68,7 @@ async function analyzeReport() {
 </script>
 
 <template>
-  <BudgetShell>
+  <PassageShell>
     <main class="bl-main upload-main">
       <NuxtLink class="back-link" to="/#reports"><span aria-hidden="true">←</span> Examples</NuxtLink>
 
@@ -183,5 +183,5 @@ async function analyzeReport() {
         </aside>
       </div>
     </main>
-  </BudgetShell>
+  </PassageShell>
 </template>
