@@ -31,29 +31,7 @@ onMounted(loadReports);
       <section class="home-hero" aria-labelledby="home-title">
         <div class="hero-copy">
           <h1 id="home-title">Know what your<br><em>documents say.</em></h1>
-          <p class="hero-lede">Ask a question. Get a clear answer, with a page citation you can check.</p>
-          <div class="hero-actions">
-            <NuxtLink to="/upload" class="bl-button bl-button-primary">Upload a document</NuxtLink>
-            <NuxtLink to="#reports" class="hero-text-link">Try an example</NuxtLink>
-          </div>
         </div>
-
-        <figure class="hero-art" :aria-busy="loading">
-          <img class="hero-artwork" src="/images/passage-document-lineart.png" alt="" fetchpriority="high">
-          <article v-if="featured" class="hero-proof-card" aria-label="A figure from the sample document">
-            <div class="proof-card-top">
-              <span class="proof-period">{{ featured.period || 'Public report' }}</span>
-            </div>
-            <p class="proof-source">{{ featured.sourceName || featured.organization || 'Source document' }}</p>
-            <h2>{{ featured.title }}</h2>
-            <div v-if="featured.metrics?.[0]" class="proof-figure">
-              <span>{{ featured.metrics[0].label }}</span>
-              <strong>{{ featured.metrics[0].value }} <small>{{ featured.metrics[0].unit }}</small></strong>
-              <small class="proof-page">{{ featured.metrics[0].sourcePage == null ? 'Page not identified' : `Page ${featured.metrics[0].sourcePage}` }}</small>
-            </div>
-            <NuxtLink class="proof-link" :to="`/reports/${encodeURIComponent(featured.id)}`">View report <span aria-hidden="true">→</span></NuxtLink>
-          </article>
-        </figure>
 
         <div class="hero-question-wrap">
           <BudgetQuestion
@@ -65,7 +43,6 @@ onMounted(loadReports);
             :placeholder="`What would you like to know about ${featured.title}?`"
             :api-base="apiBase"
             :ask-path="`/budget/reports/${encodeURIComponent(featured.id)}/ask`"
-            :suggestions="['Summarize the key points', 'What dates or figures should I note?']"
           />
           <div v-else class="hero-question-empty bl-panel" role="status">
             <h2>{{ loading ? 'Opening the examples…' : 'Bring a PDF to begin.' }}</h2>

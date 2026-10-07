@@ -1,6 +1,6 @@
 # Passage design study
 
-**Current target:** `r6-passage-source-context`. The user asked for direct implementation, so no mockup review is required.
+**Current target:** `r7-passage-colosseum-hero`. The user asked for direct implementation, so no mockup review is required.
 
 ## References and transferable patterns
 
@@ -8,7 +8,8 @@
 |---|---|---|
 | [Trajectory](https://www.trajectory.ai/) | Airy editorial opening, warm pale color fields, restrained grid lines, and fine illustrated artwork. Later sections shift in scale and tone. | Keep the page spacious. Use paper colors, line art, and deliberate changes between sections. Do not copy the product's artwork or branding. |
 | User-supplied Wrk screenshot | Clear navigation, visible calls to action, and a large product interface shown as proof. | Make upload and example browsing easy to find. Show live source details rather than customer logos or invented metrics. |
-| User-supplied Trajectory screenshot | Pastel sky tones, drawn forms, and a large typographic hero. | Keep warm paper and navy. Use coral as a small accent. Avoid green, lavender panels, and broad pastel gradients. |
+| User-supplied Trajectory screenshot | Pastel sky tones, drawn forms, and a large typographic hero. | Use warm paper, navy, and coral in the interface. Avoid green interface surfaces, lavender panels, and broad pastel gradients. |
+| Generated Colosseum landscape | Deep blue open sky, a distant focal subject, warm grass highlights, and cinematic grain. | Use the Colosseum landscape as an edge-to-edge hero background. Keep the headline and question bar centered over the sky. Natural greenery stays in the image only. |
 
 ## Target behavior
 
@@ -24,11 +25,12 @@
 ## Visual decisions
 
 - Warm paper canvas; deep navy ink; coral accent; muted slate. No green or lavender.
-- Space Grotesk for display headings and DM Sans for body text and controls.
+- Newsreader for display headings and DM Sans for body text and controls.
 - Fine rule borders, transparent line art, and a compact frosted prompt bar. Keep the active document title beside the prompt.
 - Short hover, focus, and border transitions only. No pulsing dots, shimmer, or looping decoration.
 - Remove the category kicker above the home headline. Keep the hero copy brief and place the prompt directly after it on small screens.
 - Use a paper answer surface with a coral edge. A deliberate abstention has no unsupported-answer warning.
+- Use a centered hero headline with the question bar below it. Keep the hero free of the previous floating sample-data card.
 
 ## Verification
 

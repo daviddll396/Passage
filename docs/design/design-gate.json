@@ -159,9 +159,27 @@
           "web/pages/upload.vue"
         ],
         "inheritedPaths": []
+      },
+      {
+        "id": "r7-passage-colosseum-hero",
+        "parentId": "r6-passage-source-context",
+        "iterationPath": "docs/design/iterations/r7-passage-colosseum-hero",
+        "scope": ["hero", "page"],
+        "reason": "Use the generated Colosseum landscape as the home hero background and center the heading and question composer over it.",
+        "changedPaths": [
+          "docs/design/DESIGN.md",
+          "docs/design/study.md",
+          "docs/design/design-gate.json",
+          "docs/design/iterations/r7-passage-colosseum-hero/direction.md",
+          "web/app.vue",
+          "web/assets/css/budgetlens.css",
+          "web/pages/index.vue",
+          "web/public/images/passage-colosseum-hero.png"
+        ],
+        "inheritedPaths": []
       }
     ],
-    "currentRevisionId": "r6-passage-source-context",
+    "currentRevisionId": "r7-passage-colosseum-hero",
     "approvals": [
       {
         "kind": "review-waiver",
@@ -216,6 +234,14 @@
         "revisionId": "r6-passage-source-context",
         "scope": ["brand", "hero", "report-detail", "upload", "document-qa"],
         "waivedAt": "2026-10-07T03:43:48+01:00"
+      },
+      {
+        "kind": "review-waiver",
+        "status": "waived",
+        "reference": "User requested the generated Colosseum landscape as the hero background with centered heading and prompt.",
+        "revisionId": "r7-passage-colosseum-hero",
+        "scope": ["hero", "page"],
+        "waivedAt": "2026-10-07T04:00:49+01:00"
       }
     ]
   },

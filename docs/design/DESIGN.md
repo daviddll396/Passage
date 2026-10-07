@@ -5,7 +5,7 @@
 - **Purpose:** Help people understand PDFs, ask questions, and check answers against source passages.
 - **Audience:** People who need clear answers from long documents.
 - **Primary actions:** Try a published example or upload a PDF for private analysis.
-- **Current design revision:** `r6-passage-source-context`.
+- **Current design revision:** `r7-passage-colosseum-hero`.
 - **Design gate:** `docs/design/design-gate.json`.
 - **Source study:** `docs/design/study.md`.
 - **Review scope:** The user waived mockup-first review and authorized direct implementation for this scope. The waiver is recorded against the current revision in the gate.
@@ -25,10 +25,10 @@
 
 - **Vibe:** Airy document editorial with a clear product interface. Use confident geometric headings, thin rules, warm paper surfaces, and real source data.
 - **Palette:** Warm paper `#faf7f2`, navy ink `#20283d`, coral `#ef8b70`, and muted slate. Do not use green, lavender answer fills, or broad pastel gradients.
-- **Type:** Space Grotesk for headings and DM Sans for controls and body copy.
+- **Type:** Newsreader for headings and DM Sans for controls and body copy.
 - **Logo:** Generated open-page line-art mark with a live Passage wordmark. File: `web/public/brand/passage-mark.png`.
 - **Shape:** Small to medium corner radii, hairline dividers, and one compact frosted prompt bar. Keep blur behind the input, with a readable fallback and restrained shadow.
-- **Imagery:** Original line art supports the hero and upload page. Actual report names, values, periods, pages, and AI evidence remain HTML data from the API. See `docs/design/iterations/r5-passage/asset-manifest.md`.
+- **Imagery:** A generated Colosseum landscape fills the home hero. Original document line art supports the upload page. Actual report names, values, periods, pages, and AI evidence remain HTML data from the API. The hero image is `web/public/images/passage-colosseum-hero.png`.
 - **Motion:** Use short color, border, and hover transitions. No looping or pulsing indicators, shimmer, or scroll-linked motion. Respect reduced-motion settings.
 
 ## Layout and page behavior
@@ -36,10 +36,10 @@
 ### Home
 
 - Use a light editorial navigation row with a visible PDF upload action.
-- Lead with one direct statement and short product explanation.
-- Show the sample document and its real source, period, detail, and page label beside the line-art illustration.
-- Place a visible glass question bar in the hero. Connect it to the sample document endpoint and keep answers and citations visible.
-- Keep the active document title beside the prompt. Align the composer with the headline and limit its width to 800px.
+- Use the Colosseum landscape as a full-bleed hero background.
+- Center the headline and place the glass question bar directly below it. Keep the active document title inside the composer.
+- Connect the prompt to the sample document endpoint and keep answers and citations visible.
+- Keep the upload action in the navigation and example library. Do not place a second sample-data card in the hero.
 - Keep a clear action for private PDF analysis.
 - Describe product claims through the source, citations, and private upload behavior.
 - Explain the source → question → evidence path, then show flexible report records.
