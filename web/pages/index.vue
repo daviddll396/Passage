@@ -61,6 +61,7 @@ onMounted(loadReports);
             class="home-question"
             compact
             title="Ask this document"
+            :source-label="[featured.title, featured.period].filter(Boolean).join(' · ')"
             :placeholder="`What would you like to know about ${featured.title}?`"
             :api-base="apiBase"
             :ask-path="`/budget/reports/${encodeURIComponent(featured.id)}/ask`"

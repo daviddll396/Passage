@@ -159,6 +159,7 @@ async function analyzeReport() {
             class="upload-question"
             :api-base="apiBase"
             :ask-path="`/budget/uploads/${encodeURIComponent(uploadId)}/ask`"
+            :source-label="report?.title || 'Your PDF'"
             :suggestions="['Summarize the key points', 'What does this document leave unanswered?']"
           />
         </section>

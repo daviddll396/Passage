@@ -139,9 +139,29 @@
           "web/public/images/passage-document-lineart.png"
         ],
         "inheritedPaths": []
+      },
+      {
+        "id": "r6-passage-source-context",
+        "parentId": "r5-passage",
+        "iterationPath": "docs/design/iterations/r6-passage-source-context",
+        "scope": ["brand", "hero", "report-detail", "upload", "document-qa"],
+        "reason": "Respond to direct feedback by removing lavender panels and diffuse gradients, showing the active source in the composer, and separating valid abstentions from unsupported answers.",
+        "changedPaths": [
+          "docs/design/DESIGN.md",
+          "docs/design/study.md",
+          "docs/design/design-gate.json",
+          "docs/design/iterations/r6-passage-source-context/direction.md",
+          "api/src/budget-ai.ts",
+          "web/assets/css/budgetlens.css",
+          "web/components/BudgetQuestion.vue",
+          "web/pages/index.vue",
+          "web/pages/reports/[id].vue",
+          "web/pages/upload.vue"
+        ],
+        "inheritedPaths": []
       }
     ],
-    "currentRevisionId": "r5-passage",
+    "currentRevisionId": "r6-passage-source-context",
     "approvals": [
       {
         "kind": "review-waiver",
@@ -188,6 +208,14 @@
         "revisionId": "r5-passage",
         "scope": ["brand", "hero", "report-library", "report-detail", "upload", "document-qa", "page"],
         "waivedAt": "2026-10-06T23:49:51+01:00"
+      },
+      {
+        "kind": "review-waiver",
+        "status": "waived",
+        "reference": "Existing user instruction: build directly without presenting stills or a design first; current iteration fixes the rejected treatment.",
+        "revisionId": "r6-passage-source-context",
+        "scope": ["brand", "hero", "report-detail", "upload", "document-qa"],
+        "waivedAt": "2026-10-07T03:43:48+01:00"
       }
     ]
   },

@@ -5,7 +5,7 @@
 - **Purpose:** Help people understand PDFs, ask questions, and check answers against source passages.
 - **Audience:** People who need clear answers from long documents.
 - **Primary actions:** Try a published example or upload a PDF for private analysis.
-- **Current design revision:** `r5-passage`.
+- **Current design revision:** `r6-passage-source-context`.
 - **Design gate:** `docs/design/design-gate.json`.
 - **Source study:** `docs/design/study.md`.
 - **Review scope:** The user waived mockup-first review and authorized direct implementation for this scope. The waiver is recorded against the current revision in the gate.
@@ -15,6 +15,8 @@
 
 - Keep source data visually separate from AI answers.
 - Ground AI answers in page evidence and abstain when the document is silent.
+- Treat zero-citation answers as abstentions from the evidence available to Passage. Do not label a deliberate abstention as an unverified answer.
+- Q&A uses extracted summaries, details, and excerpts rather than the full PDF. Describe missing answers as gaps in available evidence, not proof the full document omits them.
 - Label document-page citations and source-listing metadata accurately.
 - Keep user-uploaded PDF files private and temporary. The API sends PDF bytes to Gemini for extraction, then discards the file; extracted data and its questions expire after 30 minutes.
 - Preserve the existing API paths, request payloads, upload limits, and sample library behavior.
@@ -22,10 +24,10 @@
 ## Brand anchor
 
 - **Vibe:** Airy document editorial with a clear product interface. Use confident geometric headings, thin rules, warm paper surfaces, and real source data.
-- **Palette:** Warm paper `#faf7f2`, navy ink `#20283d`, indigo `#34395f`, coral `#ef8b70`, periwinkle, and muted slate. Do not use green.
+- **Palette:** Warm paper `#faf7f2`, navy ink `#20283d`, coral `#ef8b70`, and muted slate. Do not use green, lavender answer fills, or broad pastel gradients.
 - **Type:** Space Grotesk for headings and DM Sans for controls and body copy.
 - **Logo:** Generated open-page line-art mark with a live Passage wordmark. File: `web/public/brand/passage-mark.png`.
-- **Shape:** Small to medium corner radii, hairline dividers, and one clearly frosted prompt bar. Keep blur behind the input, with a readable fallback.
+- **Shape:** Small to medium corner radii, hairline dividers, and one compact frosted prompt bar. Keep blur behind the input, with a readable fallback and restrained shadow.
 - **Imagery:** Original line art supports the hero and upload page. Actual report names, values, periods, pages, and AI evidence remain HTML data from the API. See `docs/design/iterations/r5-passage/asset-manifest.md`.
 - **Motion:** Use short color, border, and hover transitions. No looping or pulsing indicators, shimmer, or scroll-linked motion. Respect reduced-motion settings.
 
@@ -37,6 +39,7 @@
 - Lead with one direct statement and short product explanation.
 - Show the sample document and its real source, period, detail, and page label beside the line-art illustration.
 - Place a visible glass question bar in the hero. Connect it to the sample document endpoint and keep answers and citations visible.
+- Keep the active document title beside the prompt. Align the composer with the headline and limit its width to 800px.
 - Keep a clear action for private PDF analysis.
 - Describe product claims through the source, citations, and private upload behavior.
 - Explain the source → question → evidence path, then show flexible report records.
@@ -47,7 +50,7 @@
 - Show the source name, report title, period, and original-source link first.
 - Separate source details, source passages, and AI answers into distinct surfaces.
 - Keep report-page labels visible when supplied. Never present report metadata as a quoted page passage.
-- Ask Gemini only after the user submits a question. Keep answer, citation, abstention, and error states readable and grounded.
+- Ask Gemini only after the user submits a question. Keep answer, citation, abstention, and error states readable and grounded; show no warning under a deliberate abstention.
 
 ### PDF upload
 
@@ -76,6 +79,7 @@
 
 - Pulsing circles, online/status dots, shimmer loaders, generic AI sparkles, and decorative motion.
 - Repeated rows of tiny labels or icon cards where a clear source/value hierarchy is stronger.
+- Full-width prompt and answer panels, broad pastel fields, diffuse shadows, and lavender answer fills.
 - Invented figures, customer logos, unsupported causal claims, or uploaded documents presented as official.
 - Trajectory or Wrk branding, assets, text, source code, or exact composition.
 - Decorative northeast arrows on actions; directional arrows remain only when they clarify navigation.

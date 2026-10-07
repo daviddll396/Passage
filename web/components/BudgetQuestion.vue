@@ -5,6 +5,7 @@ import { budgetRequest } from '../utils/budgetApi.js';
 const props = defineProps({
   apiBase: { type: String, required: true },
   askPath: { type: String, required: true },
+  sourceLabel: { type: String, default: '' },
   suggestions: { type: Array, default: () => [] },
   title: { type: String, default: 'Ask this document' },
   placeholder: { type: String, default: 'What would you like to know about this document?' },
@@ -14,6 +15,7 @@ const props = defineProps({
 const question = ref('');
 const answer = ref('');
 const citations = ref([]);
+const abstained = ref(false);
 const error = ref('');
 const loading = ref(false);
 
@@ -21,6 +23,7 @@ watch(() => props.askPath, () => {
   question.value = '';
   answer.value = '';
   citations.value = [];
+  abstained.value = false;
   error.value = '';
 });
 
@@ -32,6 +35,7 @@ async function ask(value = question.value) {
   error.value = '';
   answer.value = '';
   citations.value = [];
+  abstained.value = false;
   try {
     const result = await budgetRequest(props.apiBase, props.askPath, {
       method: 'POST',
@@ -39,6 +43,7 @@ async function ask(value = question.value) {
     });
     answer.value = result.answer;
     citations.value = Array.isArray(result.citations) ? result.citations : [];
+    abstained.value = result.abstained === true;
   } catch (cause) {
     error.value = cause.message;
   } finally {
@@ -64,7 +69,7 @@ async function ask(value = question.value) {
         :disabled="loading"
       ></textarea>
       <div class="question-form-bottom">
-        <span>Nothing is sent until you ask.</span>
+        <span v-if="sourceLabel" class="source-context">Source · <strong>{{ sourceLabel }}</strong></span>
         <button class="bl-button bl-button-primary" type="submit" :disabled="loading || !question.trim()">
           {{ loading ? 'Checking the source…' : 'Ask question' }}
         </button>
@@ -80,7 +85,6 @@ async function ask(value = question.value) {
 
     <div v-if="answer" class="answer-panel" aria-live="polite">
       <div class="answer-copy-wrap">
-        <p class="answer-label">Answer</p>
         <p class="answer-copy">{{ answer }}</p>
       </div>
       <div v-if="citations.length" class="citation-list">
@@ -92,7 +96,7 @@ async function ask(value = question.value) {
           <small>{{ citation.kind === 'metadata' ? 'Document listing metadata' : citation.page == null ? 'Source page not identified' : `Page ${citation.page}` }}</small>
         </article>
       </div>
-      <p v-else class="no-citation">No supporting passage was returned. Treat this answer as unverified.</p>
+      <p v-else-if="!abstained" class="no-citation">No supporting passage was returned.</p>
     </div>
   </section>
 </template>

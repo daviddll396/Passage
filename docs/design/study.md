@@ -1,6 +1,6 @@
 # Passage design study
 
-**Current target:** `r5-passage`. The user asked for direct implementation, so no mockup review is required.
+**Current target:** `r6-passage-source-context`. The user asked for direct implementation, so no mockup review is required.
 
 ## References and transferable patterns
 
@@ -8,7 +8,7 @@
 |---|---|---|
 | [Trajectory](https://www.trajectory.ai/) | Airy editorial opening, warm pale color fields, restrained grid lines, and fine illustrated artwork. Later sections shift in scale and tone. | Keep the page spacious. Use paper colors, line art, and deliberate changes between sections. Do not copy the product's artwork or branding. |
 | User-supplied Wrk screenshot | Clear navigation, visible calls to action, and a large product interface shown as proof. | Make upload and example browsing easy to find. Show live source details rather than customer logos or invented metrics. |
-| User-supplied Trajectory screenshot | Pastel sky tones, drawn forms, and a large typographic hero. | Use a peach, periwinkle, navy, and coral palette. Keep the question input readable and functional. |
+| User-supplied Trajectory screenshot | Pastel sky tones, drawn forms, and a large typographic hero. | Keep warm paper and navy. Use coral as a small accent. Avoid green, lavender panels, and broad pastel gradients. |
 
 ## Target behavior
 
@@ -23,12 +23,17 @@
 
 ## Visual decisions
 
-- Warm paper canvas; deep navy ink; coral and periwinkle accents. No green.
+- Warm paper canvas; deep navy ink; coral accent; muted slate. No green or lavender.
 - Space Grotesk for display headings and DM Sans for body text and controls.
-- Fine rule borders, transparent line art, and a visibly frosted prompt bar.
+- Fine rule borders, transparent line art, and a compact frosted prompt bar. Keep the active document title beside the prompt.
 - Short hover, focus, and border transitions only. No pulsing dots, shimmer, or looping decoration.
 - Remove the category kicker above the home headline. Keep the hero copy brief and place the prompt directly after it on small screens.
+- Use a paper answer surface with a coral edge. A deliberate abstention has no unsupported-answer warning.
 
 ## Verification
 
-The home, upload, and report-detail pages were inspected at 1402 × 876. The home prompt, upload action, live source data, and line-art asset render. At a narrow mobile width, the question box and upload action remain available and the page has no horizontal overflow. The Q&A form was not submitted, so this visual check did not call Gemini. Reduced-motion and glass fallback rules are present in CSS.
+The home page was inspected in the T3 preview at 1402 × 876. The prompt, source label, upload action, sample data, and line-art asset render. No live Gemini request was made during this check. The mobile viewport resize timed out, so mobile behavior is not verified in this revision. Reduced-motion and glass fallback rules are present in CSS.
+
+## Q&A behavior note
+
+The sample document is a public federal budget report. It contains budget details and October 2025 metadata, but no personal name. The correct result for “what is my name” is an abstention. The API sends extracted summary, details, and evidence excerpts to Gemini; it does not keep or search the full uploaded PDF after extraction. A fact that extraction leaves out may not be available to Q&A.

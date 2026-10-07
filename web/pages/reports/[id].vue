@@ -89,6 +89,7 @@ onMounted(loadReport);
             <BudgetQuestion
               :api-base="apiBase"
               :ask-path="`/budget/reports/${encodeURIComponent(report.id)}/ask`"
+              :source-label="[report.title, report.period].filter(Boolean).join(' · ')"
               :suggestions="['Summarize the key points', 'What dates or figures should I note?']"
             />
           </aside>
