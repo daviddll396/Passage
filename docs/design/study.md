@@ -1,46 +1,41 @@
 # Passage design study
 
-**Current target:** `r9-passage-conversation-hero`. The user asked for direct implementation, so no mockup review is required.
+**Current direction:** `r11-passage-monochrome-waves`. The user asked for direct implementation, so this iteration does not require a mockup review.
 
-## References and transferable patterns
+## References
 
-| Reference | Observed pattern | Use in Passage |
+| Reference | Pattern used | Use and limits |
 |---|---|---|
-| [Trajectory](https://www.trajectory.ai/) | Airy editorial opening, warm pale color fields, restrained grid lines, and fine illustrated artwork. Later sections shift in scale and tone. | Keep the page spacious. Use paper colors, line art, and deliberate changes between sections. Do not copy the product's artwork or branding. |
-| User-supplied Wrk screenshot | Clear navigation, visible calls to action, and a large product interface shown as proof. | Make upload and example browsing easy to find. Show live source details rather than customer logos or invented metrics. |
-| User-supplied Trajectory screenshot | Pastel sky tones, drawn forms, and a large typographic hero. | Use warm paper, navy, and coral in the interface. Avoid green interface surfaces, lavender panels, and broad pastel gradients. |
-| User-supplied observatory landscape | Deep blue open sky, a distant observatory, coral grass, and a small fox. | Use the supplied image as a full-viewport hero background. Keep the headline and question bar centered over the sky. |
-| [Prompt Kit](https://github.com/ibelick/prompt-kit) | Compact composer with textarea, action controls, and a loading state. The library targets React and Next.js. | Adapt its composer pattern in Vue with native controls. Keep the API and citation behavior already used by Passage. |
+| [React Bits Pattern Waves](https://reactbits.dev/backgrounds/pattern-waves) and the user's settings screenshot | A repeated plus glyph bends into soft silk-like waves. The screenshot selects Plus marks and a Silk wave on black with white marks. | Build a restrained canvas effect in Vue. Do not import the React component. Do not capture the pointer. Pause it for hidden tabs and reduced motion. |
+| [PantryPal](https://github.com/Velto-Studio/pantry-bud) | A product landing page moves from navigation and hero into problem/benefit, workflow, feature and product preview, FAQ, final action, and footer. | Adapt the section hierarchy for Passage. Leave out its mascot, pricing, copy, artwork, and code. |
+| [Prompt Kit](https://www.prompt-kit.com/docs/prompt-input) | Compact prompt composer with document context and action controls. | Keep the existing Vue `PassageAssistant` behavior and restyle its composer. Do not add a React dependency. |
 
-## Target behavior
+## Page structure
 
-- The home hero shows the first real example returned by `/budget/reports`.
-- The question input submits to `/budget/reports/:id/ask` for the sample or `/budget/uploads/:uploadId/ask` for an uploaded document.
-- The prompt placeholder names the active document. No AI request runs until the visitor submits.
-- Uploading from the hero opens a modal, extracts the PDF, and attaches its filename and temporary upload ID to the prompt.
-- The visitor question appears above the composer. After the JSON answer arrives, the UI reveals it progressively and then shows its citations.
-- “Try an example” links to the sample library; “View on GitHub” opens the repository.
-- The curated library keeps its public budget example. Visitors can upload other PDFs for private analysis.
-- Upload extraction supports documents with or without structured numeric details, when page evidence is available.
-- Report detail, report cards, upload privacy, expiry, and cited answers keep their existing data paths.
-- The illustration is decorative. Values and evidence stay in the live HTML response.
+1. Glass navigation over a full-screen black wave hero.
+2. Centered headline, example and GitHub links, and the existing document composer.
+3. Monochrome bento with an illustrative stack of source sheets and two product facts.
+4. Three short steps: open a document, ask, check the passage.
+5. The separate live sample-document library with its existing states.
+6. Short FAQ for evidence, supported PDFs, and temporary uploads.
+7. Final upload action and shared footer.
 
-## Visual decisions
+There is no pricing section or mascot. The page has no fabricated statistics, testimonials, customer logos, or claims about live response streaming.
 
-- Warm paper canvas; deep navy ink; coral accent; muted slate. No green or lavender.
-- Newsreader for display headings and DM Sans for body text and controls.
-- Fine rule borders, transparent line art, and a compact frosted prompt bar. Keep the active document title beside the prompt.
-- Short hover, focus, and border transitions. No pulsing dots or shimmer. Use the requested progress line and typing caret, with reduced-motion support.
-- Remove the category kicker above the home headline. Keep the hero copy brief and place the prompt directly after it on small screens.
-- Use a paper answer surface with a coral edge. A deliberate abstention has no unsupported-answer warning.
-- Use a centered hero headline with the question bar below it. Keep the hero free of the previous floating sample-data card.
-- Keep the hero at 100svh and edge to edge; overlay the navigation and upload action on the image.
-- On the first question, hide the hero actions and anchor the composer near the bottom. The conversation area grows above it.
-- Use the Prompt Kit pattern as a reference. Its React component is not installed in the Nuxt/Vue app.
+## Vue implementation
+
+- `PatternWaves.vue` draws small white plus marks on a canvas. Vue lifecycle hooks manage resize, animation, reduced-motion preference, hidden-tab state, and cleanup.
+- Inline SVGs and CSS draw the process icons, evidence stack, and closing illustration.
+- The sample library stays separate from illustrative bento artwork and continues to load from the API.
+- The prompt, upload dialog, chat, citations, and request paths stay in `PassageAssistant.vue` unchanged.
+
+## Product limits shown in the UI
+
+- Answers use extracted document information and show supporting passages when available.
+- A lack of supporting evidence is not presented as proof that the full PDF does not contain the answer.
+- Uploaded PDFs are private, the server discards the original after processing, and the session expires after 30 minutes.
+- The API returns a JSON answer. The interface reveals that answer progressively; it does not stream tokens from Gemini.
 
 ## Verification
 
-The r7 home page was inspected in the T3 preview at desktop size. The r8 and r9 changes still need visual checks at desktop and mobile sizes. Preview automation is unavailable: status reported no attached automation tab and repeated open attempts timed out. No live Gemini request was made. Reduced-motion and glass fallback rules are present in CSS.
-## Q&A behavior note
-
-The sample document is a public federal budget report. It contains budget details and October 2025 metadata, but no personal name. The correct result for “what is my name” is an abstention. The API sends extracted summary, details, and evidence excerpts to Gemini; it does not keep or search the full uploaded PDF after extraction. A fact that extraction leaves out may not be available to Q&A.
+The T3 preview was checked at desktop and phone widths. The phone layout had no horizontal overflow, and the PDF dialog opened correctly. The report library showed its unavailable state because the API on port 4000 was not running. `npm run build` completed successfully. No tests were added or run.

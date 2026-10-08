@@ -165,7 +165,7 @@ onBeforeUnmount(() => typingTimers.forEach((timer) => window.clearInterval(timer
 
 <template>
   <div class="passage-assistant" :class="{ 'has-conversation': turns.length }">
-    <div v-if="turns.length" ref="conversationLog" class="assistant-conversation" role="log" aria-label="Document conversation" tabindex="0">
+    <div v-if="turns.length" ref="conversationLog" class="assistant-conversation" data-lenis-prevent role="log" aria-label="Document conversation" tabindex="0">
       <article v-for="(turn, index) in turns" :key="index" class="assistant-turn">
         <p class="conversation-question">{{ turn.question }}</p>
         <div class="conversation-answer" :aria-live="turn.status === 'typing' ? 'off' : 'polite'">
@@ -204,7 +204,7 @@ onBeforeUnmount(() => typingTimers.forEach((timer) => window.clearInterval(timer
         rows="2"
         maxlength="1000"
         :disabled="busy"
-        :placeholder="attached ? `Ask about ${attached.name}` : report ? `Ask about ${report.title}` : 'Upload a PDF to get started'"
+        :placeholder="attached ? `Ask about ${attached.name}` : report ? `Ask about ${report.title}` : 'Choose a sample or add a PDF to ask a question'"
         @keydown.enter.exact="onEnter"
       ></textarea>
       <div class="prompt-actions">
@@ -212,7 +212,7 @@ onBeforeUnmount(() => typingTimers.forEach((timer) => window.clearInterval(timer
           <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m7 10.7 4.6-4.6a2.4 2.4 0 0 1 3.4 3.4l-6.3 6.3a4 4 0 0 1-5.7-5.7l6.1-6.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
           <span>{{ attached ? 'Replace PDF' : 'Add a PDF' }}</span>
         </button>
-        <span class="prompt-source">{{ attached ? 'Private document' : report ? report.title : 'Choose an example or upload a PDF' }}</span>
+        <span class="prompt-source">{{ attached ? 'Private document' : report ? report.title : 'No document selected' }}</span>
         <button class="send-button" type="submit" :disabled="busy || !prompt.trim() || !canAsk" aria-label="Send prompt">
           <span v-if="busy">Thinking</span>
           <span v-else>Send</span>
@@ -221,7 +221,7 @@ onBeforeUnmount(() => typingTimers.forEach((timer) => window.clearInterval(timer
       </div>
     </form>
 
-    <dialog ref="uploadDialog" class="upload-dialog" aria-labelledby="upload-dialog-title" @cancel="onDialogCancel">
+    <dialog ref="uploadDialog" class="upload-dialog" data-lenis-prevent aria-labelledby="upload-dialog-title" @cancel="onDialogCancel">
       <div class="upload-dialog-head">
         <div>
           <p class="upload-dialog-kicker">Private document</p>

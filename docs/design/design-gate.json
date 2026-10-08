@@ -247,9 +247,96 @@
         "inheritedPaths": [
           "web/public/images/passage-observatory-hero.png"
         ]
+      },
+      {
+        "id": "r10-passage-editorial-home",
+        "parentId": "r9-passage-conversation-hero",
+        "iterationPath": "docs/design/iterations/r10-passage-editorial-home",
+        "scope": [
+          "hero",
+          "home",
+          "library",
+          "typography"
+        ],
+        "reason": "Restore the home-page layout, refine the full-height hero and sample-library states, reduce repeated copy, and use Newsreader with DM Sans.",
+        "changedPaths": [
+          "docs/design/DESIGN.md",
+          "docs/design/study.md",
+          "docs/design/design-gate.json",
+          "docs/design/iterations/r10-passage-editorial-home/direction.md",
+          "web/app.vue",
+          "web/assets/css/passage.css",
+          "web/components/PassageAssistant.vue",
+          "web/pages/index.vue"
+        ],
+        "inheritedPaths": [
+          "web/public/brand/passage-mark.png",
+          "web/public/images/passage-observatory-hero.png",
+          "web/public/images/passage-closing-landscape.png"
+        ]
+      },
+      {
+        "id": "r11-passage-monochrome-waves",
+        "parentId": "r10-passage-editorial-home",
+        "iterationPath": "docs/design/iterations/r11-passage-monochrome-waves",
+        "scope": [
+          "brand",
+          "hero",
+          "home",
+          "navigation",
+          "library",
+          "page"
+        ],
+        "reason": "Redesign the Passage home in monochrome with a Vue wave-pattern hero, glass navigation, product bento, and PantryPal-inspired section order; omit pricing and mascot.",
+        "changedPaths": [
+          "docs/design/DESIGN.md",
+          "docs/design/study.md",
+          "docs/design/design-gate.json",
+          "docs/design/iterations/r11-passage-monochrome-waves/direction.md",
+          "web/assets/css/passage.css",
+          "web/components/PassageAssistant.vue",
+          "web/components/PatternWaves.vue",
+          "web/pages/index.vue"
+        ],
+        "inheritedPaths": [
+          "web/components/BudgetReportCard.vue",
+          "web/components/PassageShell.vue",
+          "web/public/brand/passage-mark.png"
+        ]
+      },
+      {
+        "id": "r12-passage-editorial-polish",
+        "parentId": "r11-passage-monochrome-waves",
+        "iterationPath": "docs/design/iterations/r12-passage-editorial-polish",
+        "scope": [
+          "hero",
+          "home",
+          "navigation",
+          "library",
+          "motion"
+        ],
+        "reason": "Restore Passage's approved observatory and boat imagery, navy and salmon palette, and editorial type. Add a fixed glass nav and restrained Lenis scrolling while keeping the current page structure.",
+        "changedPaths": [
+          "docs/design/DESIGN.md",
+          "docs/design/design-gate.json",
+          "docs/design/iterations/r12-passage-editorial-polish/direction.md",
+          "web/app.vue",
+          "web/assets/css/passage.css",
+          "web/components/PassageAssistant.vue",
+          "web/pages/index.vue",
+          "web/package.json",
+          "web/package-lock.json"
+        ],
+        "inheritedPaths": [
+          "web/components/BudgetReportCard.vue",
+          "web/components/PassageShell.vue",
+          "web/public/brand/passage-mark.png",
+          "web/public/images/passage-observatory-hero.png",
+          "web/public/images/passage-closing-landscape.png"
+        ]
       }
     ],
-    "currentRevisionId": "r9-passage-conversation-hero",
+    "currentRevisionId": "r12-passage-editorial-polish",
     "approvals": [
       {
         "kind": "review-waiver",
@@ -360,6 +447,34 @@
           "page"
         ],
         "waivedAt": "2026-10-07T03:53:43.583Z"
+      },
+      {
+        "kind": "review-waiver",
+        "status": "waived",
+        "reference": "Existing user instruction: build the Passage design directly without presenting stills or a mockup first.",
+        "revisionId": "r10-passage-editorial-home",
+        "scope": [
+          "hero",
+          "home",
+          "library",
+          "typography"
+        ],
+        "waivedAt": "2026-10-07T20:43:30+01:00"
+      },
+      {
+        "kind": "review-waiver",
+        "status": "waived",
+        "reference": "User instruction: build the Passage redesign directly without a mockup review; latest direction specifies monochrome styling, Vue Pattern Waves, PantryPal page structure, bento and stacked evidence artwork, with pricing omitted.",
+        "revisionId": "r11-passage-monochrome-waves",
+        "scope": [
+          "brand",
+          "hero",
+          "home",
+          "navigation",
+          "library",
+          "page"
+        ],
+        "waivedAt": "2026-10-08T04:38:18+01:00"
       }
     ]
   },
