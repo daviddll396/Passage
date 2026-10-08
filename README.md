@@ -41,6 +41,16 @@ Run `npm run eval:budget:live` in `api` to send those five cases through the con
 
 The live evaluation checks the extracted-evidence Q&A prompt with prepared budget-report evidence. It does not yet evaluate PDF extraction or the full-PDF fallback against uploaded files.
 
+## Render and Aiven deployment
+
+Use `api` as the Render root directory and select Node. Set the build command to `npm ci --include=dev && npm run build` and the start command to `npm start`. Use Node 22.
+
+Add the Aiven CA certificate as a Render secret file named `ca.pem`. Set `DB_SSL_CA_PATH=/etc/secrets/ca.pem`. The API checks the server certificate. Set `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD` from Aiven. Keep passwords and API keys in Render environment variables.
+
+Set `GEMINI_API_KEY`, `GEMINI_MODEL`, and `FRONTEND_ORIGIN`. Use the exact deployed frontend origin, with no trailing slash. Set `NODE_ENV=production`. Do not set `PORT`; Render supplies it.
+
+At startup, the API applies the existing repeatable schema and seed scripts before it starts the server. If a script fails, startup stops. Check `/ready` after deployment to confirm database access.
+
 ## Stack
 
 Nuxt 3, Vue, Express, TypeScript, MySQL, Docker Compose, and the Gemini API.
