@@ -47,7 +47,7 @@ Use `api` as the Render root directory and select Node. Set the build command to
 
 Add the Aiven CA certificate as a Render secret file named `ca.pem`. Set `DB_SSL_CA_PATH=/etc/secrets/ca.pem`. The API checks the server certificate. Set `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD` from Aiven. Keep passwords and API keys in Render environment variables.
 
-Set `GEMINI_API_KEY`, `GEMINI_MODEL`, and `FRONTEND_ORIGIN`. Use the exact deployed frontend origin, with no trailing slash. Set `NODE_ENV=production`. Do not set `PORT`; Render supplies it.
+Set `GEMINI_API_KEY`, `GEMINI_MODEL`, and `FRONTEND_ORIGIN`. Use the exact deployed frontend origin, with no trailing slash. For multiple origins, separate them with commas. Set `NODE_ENV=production`. Do not set `PORT`; Render supplies it.
 
 At startup, the API applies the existing repeatable schema and seed scripts before it starts the server. If a script fails, startup stops. Check `/ready` after deployment to confirm database access.
 

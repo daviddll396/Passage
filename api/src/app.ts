@@ -5,7 +5,8 @@ import { createBudgetRoutes } from './budget.js';
 export function createApp() {
   const app = express();
   const frontendOrigins = new Set([
-    process.env.FRONTEND_ORIGIN ?? 'http://127.0.0.1:3000',
+    ...(process.env.FRONTEND_ORIGIN ?? 'http://127.0.0.1:3000')
+      .split(',').map((origin) => origin.trim()).filter(Boolean),
     ...(process.env.NODE_ENV === 'production' ? [] : ['http://localhost:3000']),
   ]);
 
