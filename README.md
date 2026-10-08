@@ -2,6 +2,25 @@
 
 Passage helps people understand PDFs. Visitors can explore a published example or upload a PDF, inspect extracted details, and ask questions that link back to evidence in the document. The current example library starts with public budget reports.
 
+**Live demo:** [passage.tolani.xyz](https://passage.tolani.xyz/)
+
+## Try the demo
+
+1. Select **Try an example** and ask a question about the sample report.
+2. Or select **Add a PDF**, upload your document, and submit a question.
+3. Read the answer and check its supporting passages and page references.
+
+The app accepts documents beyond budgets, including resumes and reports. An answer can state that the document does not contain enough information.
+
+## What the project demonstrates
+
+- A Nuxt 3 and Vue frontend with PDF upload, a chat interface, answer text reveal, automatic chat scrolling, and supporting passages.
+- An Express and TypeScript API that calls Gemini, checks structured model output, and validates citation references.
+- A MySQL sample report library, with repeatable schema and seed scripts.
+- A second question path that sends the original PDF when the extracted evidence cannot answer the question.
+- Offline and live prompt evaluations, request limits, and frontend error messages.
+- Deployment to Vercel, Render, and Aiven, with verified database TLS and an explicit list of allowed frontend origins.
+
 ## Run locally
 
 1. Copy `.env.example` to `.env` and add your Gemini API key. Keep `.env` private.
@@ -17,7 +36,7 @@ Passage helps people understand PDFs. Visitors can explore a published example o
 - The default model is `gemini-3.5-flash-lite`. Set `GEMINI_MODEL` in `.env` to use another model that supports PDF input and structured output.
 - Uploaded PDFs are limited to 8 MB. The browser keeps the original PDF in the current tab. The API sends it to Gemini for extraction and discards the bytes; if extracted evidence cannot answer a question, the browser resends that same PDF for a source-grounded answer. The API keeps only the extracted report and a file digest in process memory for 30 minutes. Private uploads are not in the public example library.
 
-The temporary upload session is held by one API process. This is suitable for the local demo. A multi-instance deployment needs shared, expiring session storage.
+The temporary upload session is held by one API process. It expires after 30 minutes and is lost when the API restarts. A multi-instance deployment needs shared, expiring session storage.
 
 ## Request limits
 
@@ -27,7 +46,7 @@ The API limits requests by client IP:
 - Questions about sample reports or extracted upload details: 12 per minute.
 - Questions that search the original uploaded PDF: 4 per minute.
 
-When a limit is reached, the API returns `429` and a `Retry-After` value in seconds. Passage reads that header and tells the visitor how long to wait. The counters are held in API process memory, so they reset when the process restarts and are not shared across multiple instances. Behind Cloud Run, confirm the forwarded IP chain and configure Express to trust only the correct proxy hops before relying on per-visitor limits. Use shared rate-limit storage before running multiple API instances.
+When a limit is reached, the API returns `429` and a `Retry-After` value in seconds. Passage reads that header and tells the visitor how long to wait. The counters are held in API process memory, so they reset when the process restarts and are not shared across multiple instances. Behind a hosting proxy, confirm the forwarded IP chain and configure Express to trust only the correct proxy hops before relying on per-visitor limits. The current API does not configure proxy trust, so visitors can share a proxy IP limit on Render. Use shared rate-limit storage before running multiple API instances.
 
 ## Public report data
 
@@ -41,7 +60,22 @@ Run `npm run eval:budget:live` in `api` to send those five cases through the con
 
 The live evaluation checks the extracted-evidence Q&A prompt with prepared budget-report evidence. It does not yet evaluate PDF extraction or the full-PDF fallback against uploaded files.
 
-## Render and Aiven deployment
+## Live deployment
+
+| Component | Platform | Configuration |
+|---|---|---|
+| Frontend | Vercel | Nuxt project, root directory `web` |
+| API | Render | Node service, root directory `api` |
+| Database | Aiven | Managed MySQL 8.4 with certificate verification |
+| Document AI | Gemini API | Server-side API key |
+
+The public frontend is available at [passage.tolani.xyz](https://passage.tolani.xyz/). The API is available at [passage-api-x7oo.onrender.com](https://passage-api-x7oo.onrender.com/health). Use [`/ready`](https://passage-api-x7oo.onrender.com/ready) to check database access.
+
+### Vercel
+
+Import the `web` project with the Nuxt preset. Set `NUXT_PUBLIC_API_BASE=https://passage-api-x7oo.onrender.com`. Use the default Nuxt build settings. Add the custom domain and use the CNAME target supplied by Vercel in the domain provider's DNS settings.
+
+### Render and Aiven
 
 Use `api` as the Render root directory and select Node. Set the build command to `npm ci --include=dev && npm run build` and the start command to `npm start`. Use Node 22.
 
@@ -50,6 +84,20 @@ Add the Aiven CA certificate as a Render secret file named `ca.pem`. Set `DB_SSL
 Set `GEMINI_API_KEY`, `GEMINI_MODEL`, and `FRONTEND_ORIGIN`. Use the exact deployed frontend origin, with no trailing slash. For multiple origins, separate them with commas. Set `NODE_ENV=production`. Do not set `PORT`; Render supplies it.
 
 At startup, the API applies the existing repeatable schema and seed scripts before it starts the server. If a script fails, startup stops. Check `/ready` after deployment to confirm database access.
+
+The deployed frontend origins are configured as:
+
+```text
+FRONTEND_ORIGIN=https://passage-three-liart.vercel.app,https://passage.tolani.xyz
+```
+
+### Current limits
+
+- The Render free API can sleep during inactivity. The first request can take longer while it starts.
+- Upload sessions and request counters are temporary and stay in one API process.
+- Gemini quotas can block a request even when the app's own request limit has not been reached.
+- The prompt evaluation covers five prepared sample-report cases. It does not prove accuracy for every uploaded PDF.
+- Passage is deployed on Vercel, Render, and Aiven. It is not deployed on GCP.
 
 ## Stack
 
