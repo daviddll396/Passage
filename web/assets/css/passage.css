@@ -957,9 +957,12 @@ body { background: var(--bl-page); }
   .bl-page:has(.bl-home) .passage-prompt .send-button { justify-self:end; }
 }
 @media (max-width:430px) {
-  .bl-page:not(:has(.bl-home)) .bl-nav-links { display:none; }
-  .bl-page:has(.bl-home) .bl-nav-links { display:none; }
   .bl-page:has(.bl-home) .hero-copy h1 { font-size:clamp(32px,9.5vw,41px); }
+}
+@media (max-width:640px) {
+  .bl-nav, .bl-page:has(.bl-home) .bl-nav { display:grid; grid-template-columns:minmax(0,1fr) auto; }
+  .bl-nav-links, .bl-page:has(.bl-home) .bl-nav-links { display:none; }
+  .bl-nav-cta, .bl-page:has(.bl-home) .bl-nav-cta { min-height:42px; justify-self:end; }
 }
 @media (prefers-reduced-motion:reduce) {
   html { scroll-behavior:auto; }
