@@ -1,6 +1,8 @@
 <script setup>
 import Lenis from 'lenis';
-import { onBeforeUnmount, onMounted } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
+
+const isBooting = ref(true);
 
 let lenis;
 let lenisFrameId = 0;
@@ -27,6 +29,7 @@ function syncLenisToMotionPreference() {
 }
 
 onMounted(() => {
+  nextTick(() => { isBooting.value = false; });
   motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
   motionPreference.addEventListener('change', syncLenisToMotionPreference);
   syncLenisToMotionPreference();
@@ -50,6 +53,14 @@ useHead({
 </script>
 
 <template>
+  <NuxtLoadingIndicator color="var(--bl-accent)" :height="2" :throttle="200" />
+  <Transition name="passage-preloader">
+    <div v-if="isBooting" class="passage-preloader" role="status">
+      <img src="/brand/passage-mark.png" alt="" aria-hidden="true">
+      <span class="passage-preloader-spinner" aria-hidden="true"></span>
+      <span>Loading Passage</span>
+    </div>
+  </Transition>
   <NuxtPage />
 </template>
 

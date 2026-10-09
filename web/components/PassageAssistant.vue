@@ -5,11 +5,14 @@ import { budgetRequest } from '../utils/budgetApi.js';
 const props = defineProps({
   apiBase: { type: String, required: true },
   report: { type: Object, default: null },
+  instanceId: { type: String, default: 'hero' },
+  showAttach: { type: Boolean, default: true },
 });
 
 const prompt = ref('');
 const turns = ref([]);
 const conversationLog = ref(null);
+const promptInput = ref(null);
 const busy = ref(false);
 const attached = ref(null);
 const uploadDialog = ref(null);
@@ -20,9 +23,10 @@ const uploading = ref(false);
 const uploadError = ref('');
 const dragging = ref(false);
 const typingTimers = new Set();
+let disposed = false;
 const maxBytes = 8 * 1024 * 1024;
 const canAsk = computed(() => Boolean(attached.value?.id || props.report?.id));
-const uploadRequest = useState('passage-upload-request', () => false);
+const uploadRequest = useState('passage-upload-request', () => '');
 
 watch(turns, () => {
   nextTick(() => {
@@ -31,17 +35,28 @@ watch(turns, () => {
 }, { deep: true, flush: 'post' });
 
 function openUploadDialog() {
+  scrollHeroIfNeeded();
   uploadError.value = '';
   selectedFile.value = null;
   if (fileInput.value) fileInput.value.value = '';
   uploadDialog.value?.showModal();
 }
 
-watch(uploadRequest, (requested) => {
-  if (!requested) return;
+function scrollHeroIfNeeded() {
+  if (props.instanceId !== 'hero') return;
+  const hero = document.getElementById('hero');
+  if (!hero) return;
+  const { top, bottom } = hero.getBoundingClientRect();
+  if (top >= 0 && bottom <= window.innerHeight) return;
+  hero.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+}
+
+watch(uploadRequest, async (target) => {
+  if (target !== props.instanceId) return;
+  await nextTick();
   openUploadDialog();
-  uploadRequest.value = false;
-});
+  uploadRequest.value = '';
+}, { immediate: true, flush: 'post' });
 
 function chooseFile(file) {
   uploadError.value = '';
@@ -86,6 +101,11 @@ async function uploadPdf() {
     selectedFile.value = null;
     if (fileInput.value) fileInput.value.value = '';
     uploadDialog.value?.close();
+    if (props.instanceId === 'hero') {
+      await nextTick();
+      promptInput.value?.focus({ preventScroll: true });
+      scrollHeroIfNeeded();
+    }
   } catch (cause) {
     uploadError.value = cause.message;
   } finally {
@@ -94,6 +114,7 @@ async function uploadPdf() {
 }
 
 function revealAnswer(turn, answer) {
+  if (disposed) return;
   turn.status = 'typing';
   const increment = Math.max(1, Math.ceil(answer.length / 100));
   let index = 0;
@@ -160,36 +181,61 @@ function onDialogCancel(event) {
   if (uploading.value) event.preventDefault();
 }
 
-onBeforeUnmount(() => typingTimers.forEach((timer) => window.clearInterval(timer)));
+onBeforeUnmount(() => {
+  disposed = true;
+  typingTimers.forEach((timer) => window.clearInterval(timer));
+});
 </script>
 
 <template>
   <div class="passage-assistant" :class="{ 'has-conversation': turns.length }">
-    <div v-if="turns.length" ref="conversationLog" class="assistant-conversation" data-lenis-prevent role="log" aria-label="Document conversation" tabindex="0">
-      <article v-for="(turn, index) in turns" :key="index" class="assistant-turn">
-        <p class="conversation-question">{{ turn.question }}</p>
-        <div class="conversation-answer" :aria-live="turn.status === 'typing' ? 'off' : 'polite'">
-          <div v-if="turn.status === 'loading'" class="answer-loading" role="status">
-            <span>Looking through the document</span>
-            <span class="loading-track" aria-hidden="true"><span></span></span>
-          </div>
-          <p v-else-if="turn.error" class="conversation-error" role="alert">{{ turn.error }}</p>
-          <template v-else>
-            <p class="assistant-answer">{{ turn.visibleAnswer }}<span v-if="turn.status === 'typing'" class="typing-caret" aria-hidden="true"></span></p>
-            <div v-if="turn.status === 'done' && turn.citations.length" class="assistant-citations">
-              <p>Supporting passages</p>
-              <article v-for="(citation, citationIndex) in turn.citations" :key="`${citation.page}-${citationIndex}`" class="assistant-citation" tabindex="0">
-                <span>{{ citation.label || 'Source passage' }}</span>
-                <blockquote v-if="citation.kind === 'summary' || citation.kind === 'metadata'">{{ citation.value }}</blockquote>
-                <blockquote v-else>“{{ citation.quote }}”</blockquote>
-                <small>{{ citation.kind === 'summary' ? 'Extracted summary, not a page quotation' : citation.kind === 'metadata' ? 'Document listing metadata' : citation.page == null ? 'Source page not identified' : `Page ${citation.page}` }}</small>
-              </article>
-            </div>
-            <p v-else-if="turn.status === 'done' && !turn.abstained" class="citation-note">No supporting passage was returned.</p>
-          </template>
+    <Transition name="conversation">
+      <div v-if="turns.length" ref="conversationLog" class="assistant-conversation" data-lenis-prevent role="log" aria-label="Document conversation" tabindex="0">
+        <div class="assistant-conversation-heading" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M5 2.75h6l4 4v10.5H5a2 2 0 0 1-2-2v-10.5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/><path d="M11 3v4h4M6.5 11h7M6.5 14h5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/></svg>
+          <span>Document conversation</span>
         </div>
-      </article>
-    </div>
+        <TransitionGroup name="conversation-turn" tag="div" class="assistant-turns">
+          <article v-for="(turn, index) in turns" :key="index" class="assistant-turn">
+            <p class="conversation-question">{{ turn.question }}</p>
+            <div class="assistant-response">
+              <span class="assistant-avatar" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none"><path d="M5 2.75h6l4 4v10.5H5a2 2 0 0 1-2-2v-10.5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M11 3v4h4M6.5 11h7M6.5 14h5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+              </span>
+              <div class="assistant-message">
+                <span class="assistant-label">Passage</span>
+                <div class="conversation-answer" :aria-live="turn.status === 'typing' ? 'off' : 'polite'">
+                  <div v-if="turn.status === 'loading'" class="answer-loading" role="status">
+                    <span>Looking through the document</span>
+                    <span class="passage-spinner" aria-hidden="true"></span>
+                  </div>
+                  <p v-else-if="turn.error" class="conversation-error" role="alert">{{ turn.error }}</p>
+                  <template v-else>
+                    <p class="assistant-answer">{{ turn.visibleAnswer }}<span v-if="turn.status === 'typing'" class="typing-caret" aria-hidden="true"></span></p>
+                    <div v-if="turn.status === 'done' && turn.citations.length" class="assistant-citations">
+                      <p>Supporting passages</p>
+                      <article v-for="(citation, citationIndex) in turn.citations" :key="`${citation.page}-${citationIndex}`" class="assistant-citation" tabindex="0">
+                        <div class="assistant-citation-heading">
+                          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 2.25h5l3 3v8.5H4a1.5 1.5 0 0 1-1.5-1.5v-8.5A1.5 1.5 0 0 1 4 2.25Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M9 2.5v3h3M5.5 8h5M5.5 10.5h3.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+                          <span>{{ citation.label || 'Source passage' }}</span>
+                        </div>
+                        <blockquote v-if="citation.kind === 'summary' || citation.kind === 'metadata'">{{ citation.value }}</blockquote>
+                        <blockquote v-else>“{{ citation.quote }}”</blockquote>
+                        <small>
+                          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2.5 3.5h11v9h-11z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M5 6h6M5 8.5h6M5 11h3.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+                          {{ citation.kind === 'summary' ? 'Extracted summary, not a page quotation' : citation.kind === 'metadata' ? 'Document listing metadata' : citation.page == null ? 'Source page not identified' : `Page ${citation.page}` }}
+                        </small>
+                      </article>
+                    </div>
+                    <p v-else-if="turn.status === 'done' && !turn.abstained" class="citation-note">No supporting passage was returned.</p>
+                  </template>
+                </div>
+              </div>
+            </div>
+          </article>
+        </TransitionGroup>
+      </div>
+    </Transition>
 
     <form class="passage-prompt" @submit.prevent="sendPrompt">
       <div v-if="attached" class="attached-file">
@@ -197,9 +243,10 @@ onBeforeUnmount(() => typingTimers.forEach((timer) => window.clearInterval(timer
         <span :title="attached.name">{{ attached.name }}</span>
         <button type="button" aria-label="Remove attached document" @click="removeAttachment">×</button>
       </div>
-      <label class="sr-only" for="passage-prompt">Ask a question about the document</label>
+      <label class="sr-only" :for="`${instanceId}-passage-prompt`">Ask a question about the document</label>
       <textarea
-        id="passage-prompt"
+        ref="promptInput"
+        :id="`${instanceId}-passage-prompt`"
         v-model="prompt"
         rows="2"
         maxlength="1000"
@@ -208,26 +255,32 @@ onBeforeUnmount(() => typingTimers.forEach((timer) => window.clearInterval(timer
         @keydown.enter.exact="onEnter"
       ></textarea>
       <div class="prompt-actions">
-        <button class="attach-button" type="button" :disabled="busy" @click="openUploadDialog">
+        <button v-if="showAttach" class="attach-button" type="button" :disabled="busy" @click="openUploadDialog">
           <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m7 10.7 4.6-4.6a2.4 2.4 0 0 1 3.4 3.4l-6.3 6.3a4 4 0 0 1-5.7-5.7l6.1-6.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
           <span>{{ attached ? 'Replace PDF' : 'Add a PDF' }}</span>
         </button>
         <span class="prompt-source">{{ attached ? 'Private document' : report ? report.title : 'No document selected' }}</span>
-        <button class="send-button" type="submit" :disabled="busy || !prompt.trim() || !canAsk" aria-label="Send prompt">
-          <span v-if="busy">Thinking</span>
-          <span v-else>Send</span>
-          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 15V5m0 0L6 9m4-4 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <button class="send-button" type="submit" :disabled="busy || !prompt.trim() || !canAsk" :aria-label="busy ? 'Sending question' : 'Send question'">
+          <span v-if="busy" class="passage-spinner" aria-hidden="true"></span>
+          <svg v-else viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 15V5m0 0L6 9m4-4 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </div>
     </form>
 
-    <dialog ref="uploadDialog" class="upload-dialog" data-lenis-prevent aria-labelledby="upload-dialog-title" @cancel="onDialogCancel">
+    <dialog ref="uploadDialog" class="upload-dialog" data-lenis-prevent :aria-labelledby="`${instanceId}-upload-dialog-title`" @cancel="onDialogCancel">
       <div class="upload-dialog-head">
-        <div>
-          <p class="upload-dialog-kicker">Private document</p>
-          <h2 id="upload-dialog-title">Add a PDF</h2>
+        <div class="upload-dialog-title-group">
+          <span class="upload-dialog-icon" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="none"><path d="M5 2.75h6l4 4v10.5H5a2 2 0 0 1-2-2v-10.5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M11 3v4h4M6.5 11h7M6.5 14h5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </span>
+          <div>
+            <p class="upload-dialog-kicker">Private document</p>
+            <h2 :id="`${instanceId}-upload-dialog-title`">Add a PDF</h2>
+          </div>
         </div>
-        <button class="dialog-close" type="button" aria-label="Close upload dialog" :disabled="uploading" @click="uploadDialog?.close()">×</button>
+        <button class="dialog-close" type="button" aria-label="Close upload dialog" :disabled="uploading" @click="uploadDialog?.close()">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m6 6 8 8M14 6l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
       </div>
       <label class="dialog-dropzone" :class="{ 'is-dragging': dragging }" @dragover.prevent="dragging = true" @dragleave.prevent="dragging = false" @drop.prevent="dragging = false; chooseFile($event.dataTransfer?.files?.[0])">
         <input ref="fileInput" class="file-input" type="file" accept="application/pdf,.pdf" aria-label="Choose a PDF file" :aria-invalid="Boolean(uploadError)" @change="onFileChange">
@@ -236,10 +289,10 @@ onBeforeUnmount(() => typingTimers.forEach((timer) => window.clearInterval(timer
         <span>{{ selectedFile ? `${(selectedFile.size / 1024 / 1024).toFixed(2)} MB` : 'PDF files up to 8 MB' }}</span>
       </label>
       <p v-if="uploadError" class="upload-dialog-error" role="alert">{{ uploadError }}</p>
-      <p class="upload-dialog-privacy">This tab keeps the original PDF and can resend it when the extracted details do not answer a question. The server discards each PDF after processing it. This private session expires after 30 minutes.</p>
+      <p class="upload-dialog-privacy"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.25 7V5a3.75 3.75 0 0 1 7.5 0v2M3.5 7.25h9v6.5h-9z" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 9.75v1.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/></svg><span>This tab keeps the original PDF and can resend it when the extracted details do not answer a question. The server discards each PDF after processing it. This private session expires after 30 minutes.</span></p>
       <div class="upload-dialog-actions">
         <button class="dialog-cancel" type="button" :disabled="uploading" @click="uploadDialog?.close()">Cancel</button>
-        <button class="dialog-confirm" type="button" :disabled="!selectedFile || uploading" @click="uploadPdf">{{ uploading ? 'Reading the PDF…' : 'Attach document' }}</button>
+        <button class="dialog-confirm" type="button" :disabled="!selectedFile || uploading" :aria-busy="uploading" @click="uploadPdf">{{ uploading ? 'Reading the PDF…' : 'Attach document' }}</button>
       </div>
       <div v-if="uploading" class="loading-track upload-progress" role="status" aria-label="Reading PDF"><span></span></div>
     </dialog>

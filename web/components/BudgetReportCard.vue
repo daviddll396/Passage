@@ -1,5 +1,10 @@
 <script setup>
-defineProps({ report: { type: Object, required: true } });
+defineProps({
+  report: { type: Object, required: true },
+  selectable: { type: Boolean, default: false },
+  selected: { type: Boolean, default: false },
+});
+defineEmits(['select']);
 </script>
 
 <template>
@@ -22,6 +27,7 @@ defineProps({ report: { type: Object, required: true } });
 
     <div class="report-card-actions">
       <a v-if="report.sourceUrl" :href="report.sourceUrl" target="_blank" rel="noopener noreferrer" class="source-action">View original report</a>
+      <button v-if="selectable" type="button" class="report-select" :class="{ 'is-selected': selected }" :aria-pressed="selected" @click="$emit('select', report)">Ask about this document</button>
       <NuxtLink class="report-action" :to="`/reports/${encodeURIComponent(report.id)}`">Read this document <span aria-hidden="true">→</span></NuxtLink>
     </div>
   </article>
