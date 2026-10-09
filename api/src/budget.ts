@@ -196,6 +196,9 @@ export function createBudgetRoutes() {
       });
     } catch (error) {
       logBudgetFailure('PDF extraction', error);
+      if (isRecord(error) && error.name === 'TimeoutError') {
+        return response.status(504).json({ error: 'Reading this PDF took too long. Please try again shortly.' });
+      }
       return response.status(502).json({ error: 'Unable to extract cited information from this document right now' });
     }
   });
