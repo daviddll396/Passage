@@ -156,10 +156,10 @@ async function sendPrompt() {
   const question = prompt.value.trim();
   if (!question || busy.value || !canAsk.value) return;
   const history = conversationHistory();
-
   const path = attached.value?.id
     ? `/budget/uploads/${encodeURIComponent(attached.value.id)}/ask`
     : `/budget/reports/${encodeURIComponent(props.report.id)}/ask`;
+
   const turn = reactive({
     question,
     answer: '',
@@ -186,6 +186,7 @@ async function sendPrompt() {
     }
     turn.citations = Array.isArray(result.citations) ? result.citations : [];
     turn.abstained = result.abstained === true;
+    turn.kind = result.kind;
     turn.answer = typeof result.answer === 'string' ? result.answer : '';
     revealAnswer(turn, result.answer || 'No answer was returned.');
   } catch (cause) {
@@ -197,7 +198,7 @@ async function sendPrompt() {
 }
 
 function onEnter(event) {
-  if (event.shiftKey) return;
+  if (event.shiftKey || event.isComposing || event.keyCode === 229) return;
   event.preventDefault();
   sendPrompt();
 }
@@ -252,7 +253,7 @@ onBeforeUnmount(() => {
                         </small>
                       </article>
                     </div>
-                    <p v-else-if="turn.status === 'done' && !turn.abstained" class="citation-note">No supporting passage was returned.</p>
+                    <p v-else-if="turn.status === 'done' && !turn.abstained && turn.kind !== 'conversation'" class="citation-note">No supporting passage was returned.</p>
                   </template>
                 </div>
               </div>
@@ -275,7 +276,6 @@ onBeforeUnmount(() => {
         v-model="prompt"
         rows="2"
         maxlength="1000"
-        :disabled="busy"
         :placeholder="attached ? `Ask about ${attached.name}` : report ? `Ask about ${report.title}` : 'Choose a sample or add a PDF to ask a question'"
         @keydown.enter.exact="onEnter"
       ></textarea>

@@ -15,6 +15,7 @@ const props = defineProps({
 const question = ref('');
 const answer = ref('');
 const citations = ref([]);
+const kind = ref('');
 const abstained = ref(false);
 const error = ref('');
 const loading = ref(false);
@@ -23,6 +24,7 @@ watch(() => props.askPath, () => {
   question.value = '';
   answer.value = '';
   citations.value = [];
+  kind.value = '';
   abstained.value = false;
   error.value = '';
 });
@@ -35,6 +37,7 @@ async function ask(value = question.value) {
   error.value = '';
   answer.value = '';
   citations.value = [];
+  kind.value = '';
   abstained.value = false;
   try {
     const result = await budgetRequest(props.apiBase, props.askPath, {
@@ -43,6 +46,7 @@ async function ask(value = question.value) {
     });
     answer.value = result.answer;
     citations.value = Array.isArray(result.citations) ? result.citations : [];
+    kind.value = result.kind;
     abstained.value = result.abstained === true;
   } catch (cause) {
     error.value = cause.message;
@@ -96,7 +100,7 @@ async function ask(value = question.value) {
           <small>{{ citation.kind === 'summary' ? 'Extracted summary, not a page quotation' : citation.kind === 'metadata' ? 'Document listing metadata' : citation.page == null ? 'Source page not identified' : `Page ${citation.page}` }}</small>
         </article>
       </div>
-      <p v-else-if="!abstained" class="no-citation">No supporting passage was returned.</p>
+      <p v-else-if="!abstained && kind !== 'conversation'" class="no-citation">No supporting passage was returned.</p>
     </div>
   </section>
 </template>
