@@ -12,7 +12,7 @@ test('OPTIONS for PDF source questions allows the Passage web app request header
     headers: {
       Origin: 'http://127.0.0.1:3000',
       'Access-Control-Request-Method': 'POST',
-      'Access-Control-Request-Headers': 'content-type,x-passage-question',
+      'Access-Control-Request-Headers': 'content-type,x-passage-question,x-passage-history',
     },
   });
 
@@ -21,4 +21,5 @@ test('OPTIONS for PDF source questions allows the Passage web app request header
   assert.equal(response.headers.get('access-control-allow-methods'), 'GET, POST, OPTIONS');
   assert.match(response.headers.get('access-control-allow-headers'), /content-type/i);
   assert.match(response.headers.get('access-control-allow-headers'), /x-passage-question/i);
+  assert.match(response.headers.get('access-control-allow-headers'), /x-passage-history/i);
 });

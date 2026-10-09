@@ -1,12 +1,14 @@
 import { createHash, randomBytes } from 'node:crypto';
+import { TextDecoder } from 'node:util';
 import express from 'express';
 import type { Request, Response } from 'express';
 import type { RowDataPacket } from 'mysql2';
 import { db } from './db.js';
 import { answerBudgetQuestion, answerBudgetQuestionFromPdf, extractBudgetReport } from './budget-ai.js';
-import type { BudgetEvidence, BudgetMetric, BudgetReport } from './budget-ai.js';
+import type { BudgetEvidence, BudgetMetric, BudgetQuestionHistory, BudgetReport } from './budget-ai.js';
 
 const PDF_LIMIT = 8 * 1024 * 1024;
+const HISTORY_LIMIT = 3_000;
 const UPLOAD_TTL_MS = 30 * 60 * 1000;
 const MAX_TEMP_REPORTS = 200;
 
@@ -111,6 +113,33 @@ function validQuestion(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0 && value.trim().length <= 1_000;
 }
 
+function parseHistory(value: unknown): BudgetQuestionHistory[] | null {
+  if (value === undefined) return [];
+  if (!Array.isArray(value) || value.length > 3) return null;
+  const serialized = JSON.stringify(value);
+  if (typeof serialized !== 'string' || Buffer.byteLength(serialized, 'utf8') > HISTORY_LIMIT) return null;
+
+  const history: BudgetQuestionHistory[] = [];
+  for (const entry of value) {
+    if (!isRecord(entry) || typeof entry.question !== 'string' || !entry.question.trim() || entry.question.length > 300 ||
+      typeof entry.answer !== 'string' || !entry.answer.trim() || entry.answer.length > 500) return null;
+    history.push({ question: entry.question, answer: entry.answer });
+  }
+  return history;
+}
+
+function parseHistoryHeader(value: string | undefined): BudgetQuestionHistory[] | null {
+  if (value === undefined) return [];
+  if (value.length > 4_000 || !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(value)) return null;
+  const bytes = Buffer.from(value, 'base64');
+  if (bytes.toString('base64') !== value) return null;
+  try {
+    return parseHistory(JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes)));
+  } catch {
+    return null;
+  }
+}
+
 function validPdf(request: Request, value: unknown): value is Buffer {
   return request.is('application/pdf') === 'application/pdf' && Buffer.isBuffer(value) && value.length >= 8 &&
     value.subarray(0, 5).toString('ascii') === '%PDF-';
@@ -206,13 +235,15 @@ export function createBudgetRoutes() {
   router.post('/reports/:id/ask', limitQuestions, async (request, response) => {
     const id = request.params.id;
     const question = request.body?.question;
+    const history = parseHistory(request.body?.history);
+    if (history === null) return response.status(400).json({ error: 'history must contain up to 3 valid entries within 3,000 UTF-8 bytes' });
     if (!validQuestion(question)) return response.status(400).json({ error: 'question must contain 1 to 1,000 characters' });
     if (typeof id !== 'string' || !/^[a-z0-9-]{1,80}$/i.test(id)) return response.status(400).json({ error: 'A valid report ID is required' });
     try {
       const row = await findPublishedReport(id);
       if (!row) return response.status(404).json({ error: 'Report not found' });
       const report = reportFromRow(row, true);
-      const answer = await answerBudgetQuestion(question.trim(), report);
+      const answer = await answerBudgetQuestion(question.trim(), report, history);
       return response.json(answer);
     } catch (error) {
       logBudgetFailure('Published report Q&A', error);
@@ -223,13 +254,15 @@ export function createBudgetRoutes() {
   router.post('/uploads/:uploadId/ask', limitQuestions, async (request, response) => {
     const uploadId = request.params.uploadId;
     const question = request.body?.question;
+    const history = parseHistory(request.body?.history);
+    if (history === null) return response.status(400).json({ error: 'history must contain up to 3 valid entries within 3,000 UTF-8 bytes' });
     if (!validQuestion(question)) return response.status(400).json({ error: 'question must contain 1 to 1,000 characters' });
     if (typeof uploadId !== 'string' || !/^[A-Za-z0-9_-]{32}$/.test(uploadId)) return response.status(400).json({ error: 'A valid upload ID is required' });
     pruneTemporaryReports();
     const temporary = temporaryReports.get(uploadId);
     if (!temporary) return response.status(404).json({ error: 'This upload has expired. Upload the PDF again to continue.' });
     try {
-      return response.json(await answerBudgetQuestion(question.trim(), temporary.report));
+      return response.json(await answerBudgetQuestion(question.trim(), temporary.report, history));
     } catch (error) {
       logBudgetFailure('Uploaded report Q&A', error);
       return response.status(502).json({ error: 'Unable to answer from this document right now' });
@@ -239,7 +272,9 @@ export function createBudgetRoutes() {
   router.post('/uploads/:uploadId/ask-source', limitSourceQuestions, express.raw({ type: 'application/pdf', limit: PDF_LIMIT }), async (request, response) => {
     const uploadId = request.params.uploadId;
     const question = request.get('X-Passage-Question');
+    const history = parseHistoryHeader(request.get('X-Passage-History'));
     const pdf: unknown = request.body;
+    if (history === null) return response.status(400).json({ error: 'history must contain up to 3 valid entries within 3,000 UTF-8 bytes' });
     if (!validQuestion(question)) return response.status(400).json({ error: 'X-Passage-Question must contain 1 to 1,000 characters' });
     if (typeof uploadId !== 'string' || !/^[A-Za-z0-9_-]{32}$/.test(uploadId)) return response.status(400).json({ error: 'A valid upload ID is required' });
     if (!validPdf(request, pdf)) return response.status(400).json({ error: 'Upload a valid PDF file up to 8 MB' });
@@ -250,7 +285,7 @@ export function createBudgetRoutes() {
       return response.status(400).json({ error: 'This PDF does not match the uploaded document' });
     }
     try {
-      return response.json(await answerBudgetQuestionFromPdf(question.trim(), pdf));
+      return response.json(await answerBudgetQuestionFromPdf(question.trim(), pdf, history));
     } catch (error) {
       logBudgetFailure('Uploaded PDF source Q&A', error);
       return response.status(502).json({ error: 'Unable to answer from this document right now' });

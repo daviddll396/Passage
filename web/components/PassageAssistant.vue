@@ -79,8 +79,30 @@ function onFileChange(event) {
 }
 
 function removeAttachment() {
+  turns.value = [];
   attached.value = null;
   sourcePdf.value = null;
+}
+
+function conversationHistory() {
+  const history = turns.value
+    .filter((turn) => (turn.status === 'typing' || turn.status === 'done') && !turn.abstained && turn.question.trim() && turn.answer.trim())
+    .slice(-3)
+    .map((turn) => ({ question: turn.question.trim().slice(0, 300), answer: turn.answer.trim().slice(0, 500) }));
+  const fits = () => new TextEncoder().encode(JSON.stringify(history)).byteLength <= 3_000;
+
+  while (history.length > 1 && !fits()) history.shift();
+  while (history.length === 1 && !fits()) {
+    const newest = history[0];
+    if (newest.answer.length > 1) newest.answer = newest.answer.slice(0, -1);
+    else if (newest.question.length > 1) newest.question = newest.question.slice(0, -1);
+    else break;
+  }
+  return history;
+}
+
+function encodeHistory(history) {
+  return btoa(String.fromCharCode(...new TextEncoder().encode(JSON.stringify(history))));
 }
 
 async function uploadPdf() {
@@ -133,12 +155,14 @@ function revealAnswer(turn, answer) {
 async function sendPrompt() {
   const question = prompt.value.trim();
   if (!question || busy.value || !canAsk.value) return;
+  const history = conversationHistory();
 
   const path = attached.value?.id
     ? `/budget/uploads/${encodeURIComponent(attached.value.id)}/ask`
     : `/budget/reports/${encodeURIComponent(props.report.id)}/ask`;
   const turn = reactive({
     question,
+    answer: '',
     visibleAnswer: '',
     citations: [],
     status: 'loading',
@@ -151,17 +175,18 @@ async function sendPrompt() {
   try {
     let result = await budgetRequest(props.apiBase, path, {
       method: 'POST',
-      body: { question },
+      body: { question, history },
     });
     if (result.abstained === true && attached.value?.id && sourcePdf.value) {
       result = await budgetRequest(props.apiBase, `/budget/uploads/${encodeURIComponent(attached.value.id)}/ask-source`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/pdf', 'X-Passage-Question': question },
+        headers: { 'Content-Type': 'application/pdf', 'X-Passage-Question': question, 'X-Passage-History': encodeHistory(history) },
         body: sourcePdf.value,
       });
     }
     turn.citations = Array.isArray(result.citations) ? result.citations : [];
     turn.abstained = result.abstained === true;
+    turn.answer = typeof result.answer === 'string' ? result.answer : '';
     revealAnswer(turn, result.answer || 'No answer was returned.');
   } catch (cause) {
     turn.error = cause.message;

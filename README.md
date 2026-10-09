@@ -34,6 +34,7 @@ The app accepts documents beyond budgets, including resumes and reports. An answ
 - PDF extraction returns structured details and page evidence. It can return no structured details when a document has none, while still requiring citable page evidence.
 - PDF extraction can take up to 120 seconds. Question requests have a 30-second timeout.
 - Answers use extracted evidence and validated citation indexes. If the document does not answer the question, the API returns an abstention without citations.
+- Follow-up questions send up to three clipped successful question-and-answer turns as context. This context is limited to 3 KB per request, is not stored by the API, and cannot serve as document evidence.
 - The default model is `gemini-3.5-flash-lite`. Set `GEMINI_MODEL` in `.env` to use another model that supports PDF input and structured output.
 - Uploaded PDFs are limited to 8 MB. The browser keeps the original PDF in the current tab. The API sends it to Gemini for extraction and discards the bytes; if extracted evidence cannot answer a question, the browser resends that same PDF for a source-grounded answer. The API keeps only the extracted report and a file digest in process memory for 30 minutes. Private uploads are not in the public example library.
 
